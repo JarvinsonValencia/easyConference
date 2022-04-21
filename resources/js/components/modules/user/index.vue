@@ -170,6 +170,9 @@ export default {
             perPage: 5
         }
     },
+    mounted(){
+        this.getlistPersons();
+    },
     computed: {
         //Obtener número de páginas
         pageCount() {

@@ -18,8 +18,20 @@
             <img :src="ruta + '/img/avatar.png'" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-            <a href="#" class="d-block">Admin</a>
+                <a class="d-block"  >
+            <!-- :to="{name: 'user.ver', params:{id: user.id}}" -->
+                 {{user.name}}
+                </a>
+            
             </div>
+        </div>
+
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="#" class="d-block" @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a>
+                </div>
         </div>
 
         <!-- Sidebar Menu -->
@@ -60,19 +72,19 @@
 
             <li class="nav-header">OPERACIONES</li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/order'">
-                <i class="nav-icon fas fa-cash-register"></i>
+                <router-link class="nav-link" :to="'/jitsi'">
+                <i class="fa-solid fa-video"></i>
                 <p>
-                    Pedidos
+                    Jitsi
                     <span class="badge badge-info right">2</span>
                 </p>
                 </router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/client'">
+                <router-link class="nav-link" :to="'/person'">
                 <i class="nav-icon fas fa-user-friends"></i>
                 <p>
-                    Clientes
+                    Usuarios
                 </p>
                 </router-link>
             </li>
@@ -94,7 +106,7 @@
 
             <li class="nav-header">ADMINISTRACIÓN</li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/person'">
+                <router-link class="nav-link" :to="'/user/create'">
                 <i class="nav-icon fas fa-users"></i>
                 <p>Usuarios</p>
                 </router-link>
@@ -130,7 +142,33 @@
 
 <script>
 export default {
-    props: ['ruta']
+    props: ['ruta', 'user'],
+     data() {
+            return {
+                fullscreenLoading: false
+            }
+    },
+    methods: {
+        logout(){
+            this.fullscreenLoading = true;
+                var url = '/authenticate/logout'
+                axios.post(url).then(response => {
+                    if (response.data.code == 204) {
+                        this.$router.push({name: 'login'})
+                        location.reload();
+                        sessionStorage.clear();
+                        this.fullscreenLoading = false;
+                    }
+                }).catch(error => {
+                    if (error.response.status == 401) {
+                        this.$router.push({name: 'login'})
+                        location.reload();
+                        sessionStorage.clear();
+                        this.fullscreenLoading = false;
+                    }
+            })
+        }
+    },
 }
 </script>
 

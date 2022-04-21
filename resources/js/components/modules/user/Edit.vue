@@ -104,9 +104,14 @@ export default {
         editUserbyId(){
              axios.post( `/administration/person/editPerson/${this.$route.params.id}`, this.fillEditPerson)
             .then(res => {
-                    
+                Swal.fire({
+                icon: 'success',
+                title: 'Actualización exitosa',
+                showConfirmButton: false,
+                timer: 50000
+                })
             })
-            this.$router.push('/person')
+           this.$router.push('/person');
         },
          getUsers() {
               axios.get( `/administration/person/getPerson/${this.$route.params.id}`)

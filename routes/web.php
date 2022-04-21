@@ -13,13 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Route::post('/authenticate/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('/administration/user/setCreateUser', [App\Http\Controllers\Administration\UsersController::class, 'setCreatePerson']);
 
-Route::get('/administration/person/getListPersons', [App\Http\Controllers\Administration\PersonsController::class, 'getListPersons']);
-Route::get('/administration/person/getPerson/{id}', [App\Http\Controllers\Administration\PersonsController::class, 'getPerson']);
-Route::post('/administration/person/setCreatePerson', [App\Http\Controllers\Administration\PersonsController::class, 'setCreatePerson']);
-Route::post('/administration/person/editPerson/{id}', [App\Http\Controllers\Administration\PersonsController::class, 'editPerson']);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+  Route::group(['middleware' => ['auth']], function () {
+
+ Route::post('/authenticate/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+  Route::get('/administration/person/getListPersons', [App\Http\Controllers\Administration\PersonsController::class, 'getListPersons']);
+  Route::get('/administration/person/getPerson/{id}', [App\Http\Controllers\Administration\PersonsController::class, 'getPerson']);
+  Route::post('/administration/person/setCreatePerson', [App\Http\Controllers\Administration\PersonsController::class, 'setCreatePerson']);
+  Route::post('/administration/person/editPerson/{id}', [App\Http\Controllers\Administration\PersonsController::class, 'editPerson']);
+
+});
 
 Route::get('/{optional?}', function () {
     return view('app');

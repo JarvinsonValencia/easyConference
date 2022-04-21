@@ -8,12 +8,28 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+/**
+ * ElementUI - biblioteca para interfaz usuario
+ */
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import VTooltip from 'v-tooltip'
-
 window.Vue.use(ElementUI);
+
+/**
+ * SweetAlert2 - biblioteca para ventanas emergentes
+ */
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
+/**
+ * EventBus - biblioteca para comunicacion entre componentes
+ */
+ export const EventBus = new Vue();
+ window.EventBus = EventBus;
+
+import VTooltip from 'v-tooltip'
 window.Vue.use(VTooltip);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -22,14 +38,9 @@ window.Vue.use(VTooltip);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('App', require('./components/App.vue').default);
-//Vue.component('navbar', require('./components/template/Navbar.vue').default);
-//Vue.component('sidebar', require('./components/template/Sidebar.vue').default);
-//Vue.component('content', require('./components/template/Content.vue').default);
-//Vue.component('footer', require('./components/template/Footer.vue').default);
+Vue.component('Auth', require('./components/Auth.vue').default);
+
 
 
 /**
