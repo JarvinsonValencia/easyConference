@@ -81,7 +81,7 @@
                 </router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/person'">
+                <router-link class="nav-link" :to="'/user'">
                 <i class="nav-icon fas fa-user-friends"></i>
                 <p>
                     Usuarios

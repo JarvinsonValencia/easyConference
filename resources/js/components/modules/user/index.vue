@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <router-link class="btn btn-info btn-sm" :to="'/person/create'">
+                    <router-link class="btn btn-info btn-sm" :to="'/user/create'">
                         <i class="fas fa-plus-square">   Nuevo Usuario</i>
                     </router-link>
                 </div>
@@ -28,28 +28,28 @@
                                 <div class="row">
                                      <div class="col-md-6">
                                         <label for="validationCustom03" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="validationCustom03" v-model="fillBsqPerson.name" @keyup.enter="getlistPersons" required>
+                                        <input type="text" class="form-control" id="validationCustom03" v-model="fillBsqUser.name" @keyup.enter="getlistUsers" required>
                                         <div class="invalid-feedback">
                                         Por favor ingrese un nombre.
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="validationCustom03" class="form-label">Documento</label>
-                                        <input type="document" class="form-control" id="validationCustom03" v-model="fillBsqPerson.document" @keyup.enter="getlistPersons" required>
+                                        <input type="document" class="form-control" id="validationCustom03" v-model="fillBsqUser.document" @keyup.enter="getlistUsers" required>
                                         <div class="invalid-feedback">
                                         Por favor ingrese un número de documento.
                                         </div>
                                     </div>
                                    <div class="col-md-6">
                                         <label for="validationCustom03" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="validationCustom03" v-model="fillBsqPerson.email" @keyup.enter="getlistPersons" required>
+                                        <input type="email" class="form-control" id="validationCustom03" v-model="fillBsqUser.email" @keyup.enter="getlistUsers" required>
                                         <div class="invalid-feedback">
                                         Por favor ingrese un email.
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="validationCustom03" class="form-label">Phone</label>
-                                        <input type="text" class="form-control" id="validationCustom03" v-model="fillBsqPerson.phone" @keyup.enter="getlistPersons" required>
+                                        <input type="text" class="form-control" id="validationCustom03" v-model="fillBsqUser.phone" @keyup.enter="getlistUsers" required>
                                         <div class="invalid-feedback">
                                         Por favor ingrese un número de teléfono.
                                         </div>
@@ -61,7 +61,7 @@
                             <div class="row">
                                 <div class="col-md-9 offset-9">
                                     <button class="btn btn-flat btn-secondary btnWidth" @click.prevent="cleanCriteriaSearch"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getlistPersons"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getlistUsers"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             <h3 class="card-title">Bandeja de resultados</h3>
                         </div>
                         <div class="card-body table-responsive">
-                            <template v-if="listPersons.length">
+                            <template v-if="listUsers.length">
                                     <table class="table table-hover table-head-fixed text-nowrap projects">
                                 <thead>
                                     <tr>
@@ -83,7 +83,7 @@
                                     </tr> 
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in listPersonsPaginated" :key="index">
+                                    <tr v-for="(item, index) in listUsersPaginated" :key="index">
                                         <td>
                                             <li class="user-block">
                                                 <img src="/img/avatar.png" :alt="item.username" class="profile-avatar-img img-fluid img-circle">
@@ -105,7 +105,7 @@
                                             <router-link class="btn btn-primary btn-sm" :to="'/'">
                                                 <i class="fas fa-folder"></i> Ver
                                             </router-link >
-                                            <router-link class="btn btn-info btn-sm" :to="{name:'person.edit', params:{id: item.id}}">
+                                            <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
                                                <i class="fas fa-pencil-alt"></i> Editar
                                             </router-link >
                                             <router-link class="btn btn-success btn-sm" :to="'/'">
@@ -155,13 +155,13 @@
 export default {
     data(){
         return {
-            fillBsqPerson: {
+            fillBsqUser: {
                 name: '',
                 document: '',
                 email: '',
                 phone: ''
             },
-            listPersons: [],
+            listUsers: [],
             listStates: [
                 {value: 'A', label: 'Activo'},
                 {value: 'I', label: 'Inactivo'}
@@ -171,23 +171,23 @@ export default {
         }
     },
     mounted(){
-        this.getlistPersons();
+        this.getlistUsers();
     },
     computed: {
         //Obtener número de páginas
         pageCount() {
-            let a = this.listPersons.length,
+            let a = this.listUsers.length,
                 b = this.perPage;
             return Math.ceil(a / b);
         },
         //Obtener registros paginados
-        listPersonsPaginated(){
+        listUsersPaginated(){
             let start = this.pageNumber * this.perPage,
                 end = start + this.perPage;
-            return this.listPersons.slice(start, end);
+            return this.listUsers.slice(start, end);
         },
         pageList(){
-            let a = this.listPersons.length,
+            let a = this.listUsers.length,
                 b = this.perPage;
             let pageCount = Math.ceil(a / b);
             let count = 0,
@@ -202,18 +202,18 @@ export default {
     },
     methods: {
         cleanCriteriaSearch() {
-            this.fillBsqPerson.name = '';
-            this.fillBsqPerson.document = '';
-            this.fillBsqPerson.email = '';
-            this.fillBsqPerson.phone = '';
+            this.fillBsqUser.name = '';
+            this.fillBsqUser.document = '';
+            this.fillBsqUser.email = '';
+            this.fillBsqUser.phone = '';
         },
         cleanUsersTray(){
-            this.listPersons = [];
+            this.listUsers = [];
         },
-        getlistPersons(){
-            axios.get('/administration/person/getListPersons')
+        getlistUsers(){
+            axios.get('/administration/user/getListUsers')
             .then(res => {
-                this.listPersons = res.data;
+                this.listUsers = res.data;
             })
         },
         nextPage() {
