@@ -1,11 +1,11 @@
 <template>
-    <div class="content-header">
+   <div class="content-header">
     <div class="content container-fluid">
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
                     <router-link class="btn btn-info btn-sm" :to="'/user/create'">
-                        <span><i class="fa-solid fa-circle-plus"></i> Nuevo</span>
+                        <span><i class="fa-solid fa-file-circle-plus"></i> Nuevo</span>
                     </router-link>
                 </div>
             </div>
@@ -13,34 +13,32 @@
                 <div class="container-fluid">
                      <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Clientes</h3>
+                            <h3 class="card-title">Actividades</h3>
                         </div>
                         <div class="card-body table-responsive">
-                            <template v-if="listClients.length">
+                            <template v-if="listActivities.length">
                                     <table class="table table-hover table-head-fixed text-nowrap projects">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
-                                        <th>Documento</th>
-                                        <th>Email</th>
-                                        <th>Teléfono</th>
+                                        <th>Fecha</th>
+                                        <th>Responsable</th>
                                         <th>Acciones</th>
                                     </tr> 
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in listClientsPaginated" :key="index">
+                                    <tr v-for="(item, index) in listActivitiesPaginated" :key="index">
                                         
                                         <td v-text="item.name"></td>
-                                        <td v-text="item.document"></td>
-                                        <td v-text="item.email"></td>
-                                        <td v-text="item.phone"></td>
-                                       
+                                        <td v-text="item.estimated_date"></td>
+                                        <td v-text="item.username"></td>
+                                        
                                         <td>
                                             <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
-                                               <i class="fa-solid fa-pen-to-square"></i>
+                                               <i class="fa-solid fa-file-pen"></i>
                                             </router-link >
                                             <router-link class="btn btn-danger btn-sm" :to="'/user'">
-                                                <i class="fa-solid fa-building-circle-xmark"></i>
+                                                <i class="fa-solid fa-file-circle-xmark"></i>
                                             </router-link >
                                         </td>
                                     </tr>
@@ -78,31 +76,31 @@
 
 <script>
 export default {
-    data(){
+        data(){
         return {
-            listClients: [],
+            listActivities: [],
             pageNumber: 0,
             perPage: 5
         }
     },
     mounted(){
-        this.getListClients();
+        this.getListActivities();
     },
     computed: {
         //Obtener número de páginas
         pageCount() {
-            let a = this.listClients.length,
+            let a = this.listActivities.length,
                 b = this.perPage;
             return Math.ceil(a / b);
         },
         //Obtener registros paginados
-        listClientsPaginated(){
+        listActivitiesPaginated(){
             let start = this.pageNumber * this.perPage,
                 end = start + this.perPage;
-            return this.listClients.slice(start, end);
+            return this.listActivities.slice(start, end);
         },
         pageList(){
-            let a = this.listClients.length,
+            let a = this.listActivities.length,
                 b = this.perPage;
             let pageCount = Math.ceil(a / b);
             let count = 0,
@@ -116,10 +114,10 @@ export default {
         }
     },
     methods: {
-        getListClients(){
-            axios.get('/administration/client/getListClients')
+        getListActivities(){
+            axios.get('/administration/activity/getListActivities')
             .then(res => {
-                this.listClients = res.data;
+                this.listActivities = res.data;
             })
         },
         nextPage() {

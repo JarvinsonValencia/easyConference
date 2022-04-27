@@ -15,15 +15,19 @@ use Illuminate\Support\Facades\Route;
 
   Route::post('/authenticate/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 
-  Route::group(['middleware' => ['auth']], function () {
+  //Route::group(['middleware' => ['auth']], function () {
 
   Route::post('/authenticate/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
   Route::get('/administration/user/getListUsers', [App\Http\Controllers\Administration\usersController::class, 'getListUsers']);
   Route::get('/administration/user/getUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'getUser']);
   Route::post('/administration/user/setCreateUser', [App\Http\Controllers\Administration\usersController::class, 'setCreateUser']);
   Route::post('/administration/user/editUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'editUser']);
 
-});
+  Route::get('/administration/activity/getListActivities', [App\Http\Controllers\Administration\ActivitiesController::class, 'getListActivities']);
+
+  Route::get('/administration/client/getListClients', [App\Http\Controllers\Administration\ClientsController::class, 'getListClients']);
+//});
 
 Route::get('/{optional?}', function () {
     return view('app');

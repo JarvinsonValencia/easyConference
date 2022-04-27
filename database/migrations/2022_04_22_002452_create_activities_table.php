@@ -18,7 +18,7 @@ class CreateActivitiesTable extends Migration
             $table->string('name');
             $table->string('description', 400);
             $table->dateTime('estimated_date');
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
 

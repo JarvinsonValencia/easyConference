@@ -21,7 +21,7 @@
                 <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Registrar usera</h3>
+                            <h3 class="card-title">Registrar usuario</h3>
                         </div>
                         <div class="card-body">
                             <form class="needs-validation" novalidate>
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <button class="btn btn-flat btn-secondary btnWidth"  @click="cancel"><i class="fa-solid fa-xmark"></i>  Cancelar</button>
-                                <button class="btn btn-flat btn-info btnWidth" @click="setRegisterUser"><i class="fa-solid fa-chek"></i>Registrar</button>
+                                <button class="btn btn-flat btn-info btnWidth" type="submit" @click="setRegisterUser"><i class="fa-solid fa-chek"></i>Registrar</button>
                                 </div>
                             </form>
                         </div>
@@ -94,23 +94,30 @@
 </div>
 </template>
 <script>
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
+
+ function validations() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                
+                // Loop over them and prevent submission
+                let validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    
+                    if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+                });
+                
+            }, false);
+       
+       
+    }
+
 export default {
     data(){
         return {
@@ -140,13 +147,12 @@ export default {
                 password: this.fillCreateUser.password,
             }
             
-             if(this.fillCreateUser.name.trim() != '' && this.fillCreateUser.document.trim() != '' 
-                && this.fillCreateUser.email.trim() != '' && this.fillCreateUser.phone.trim() != '' && this.fillCreateUser.username.trim() != ''
-                 && this.fillCreateUser.password.trim() != '' && this.validateEmail() > 0){
+            if(this.validateEmail() > 0){
                
                  axios.post('/administration/user/setCreateUser', params)
                     .then(res => {
-                    this.listUser.push(res.data)
+                        console.log(res.data);
+                     this.listUser.push(res.data)
                       Swal.fire({
                         icon: 'success',
                         title: 'Registro exitoso',

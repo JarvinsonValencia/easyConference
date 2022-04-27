@@ -40,97 +40,43 @@
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview">
-                
-                <router-link class="nav-link" :to="'/'">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Dashboard
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-                
-                </router-link>
-                <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="../../index.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard v1</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../../index2.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard v2</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../../index3.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard v3</p>
-                    </a>
-                </li>
-                </ul>
 
-            <li class="nav-header">OPERACIONES</li>
+            <li class="nav-header">MENÚ</li>
             <li class="nav-item">
                 <router-link class="nav-link" :to="'/jitsi'">
                 <i class="fa-solid fa-video"></i>
                 <p>
-                    Jitsi
-                    <span class="badge badge-info right">2</span>
+                    Reuniones
+                    <span class="badge badge-info right"></span>
+                </p>
+                </router-link>
+            </li>
+             <li class="nav-item">
+                <router-link class="nav-link" :to="'/activity'">
+                <i class="fa-solid fa-list-check"></i>
+                <p>
+                    Actividades
+                    <span class="badge badge-info right"></span>
                 </p>
                 </router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link" :to="'/user'">
-                <i class="nav-icon fas fa-user-friends"></i>
+               <i class="fa-solid fa-people-group"></i>
                 <p>
                     Usuarios
                 </p>
                 </router-link>
             </li>
-            
-            <li class="nav-header">CONFIGURACION</li>
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/category'">
-                <i class="nav-icon fas fa-sitemap"></i>
-                <p>Categorias</p>
-                </router-link>
-            </li>
-            
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/product'">
-                <i class="nav-icon fas fa-sitemap"></i>
-                <p>Productos</p>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="'/client'">
+               <i class="fa-solid fa-city"></i>
+                <p>
+                    Clientes
+                </p>
                 </router-link>
             </li>
 
-            <li class="nav-header">ADMINISTRACIÓN</li>
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/user/create'">
-                <i class="nav-icon fas fa-users"></i>
-                <p>Usuarios</p>
-                </router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/role'">
-                <i class="nav-icon fas fa-unlock-alt"></i>
-                <p>Roles</p>
-                </router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/permission'">
-                <i class="nav-icon far fa-key"></i>
-                <p>Permisos</p>
-                </router-link>
-            </li>
-
-               <li class="nav-header">REPORTES</li>
-            <li class="nav-item">
-                <router-link class="nav-link" :to="'/report'">
-                <i class="nav-icon fas fa-file-export"></i>
-                <p>Productos</p>
-                </router-link>
-            </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

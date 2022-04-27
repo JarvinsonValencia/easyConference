@@ -12,8 +12,8 @@ export default new VueRouter({
         { path: '/user/create', component: require('./components/modules/user/create.vue').default},
         { path: '/user/edit/:id', name: 'user.edit', component: require('./components/modules/user/Edit.vue').default, props:true},
         { path: '/jitsi', component: require('./components/modules/jitsi/Jitsi.vue').default},
-        
-        
+        { path: '/activity', name: 'activity', component: require('./components/modules/activity/Index.vue').default},
+        { path: '/client', name: 'client', component: require('./components/modules/client/index.vue').default},
     ],
     mode:'history',
     //routes: rutas,
