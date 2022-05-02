@@ -187,7 +187,7 @@ export default {
         return;
       }
         this.setRegisterUser()
-        this.$router.go(this.$router.currentRoute)
+         this.$router.go(this.$router.currentRoute)
         this.$nextTick(() => this.$bvModal.hide(modalId))
     },
 
@@ -203,15 +203,16 @@ export default {
         axios.post('/administration/user/setCreateUser', params)
             .then(res => {
                this.listUsers.push(res.data)
-                 Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+               
           }).catch(error => {
             console.log(error)
           })
+          Swal.fire({
+                    icon: 'success',
+                    title: 'Registro exitoso',
+                    showConfirmButton: false,
+                    timer: 5000
+                })
           this.$nextTick(() => this.$bvModal.hide(modalId))
     },
 
