@@ -18,6 +18,7 @@ class ClientFactory extends Factory
             'document' => rand(1001, 10999),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
+            'address' => $this->faker->address(),
         ];
     }
 }

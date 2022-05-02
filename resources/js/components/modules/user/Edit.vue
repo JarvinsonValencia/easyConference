@@ -13,7 +13,7 @@
             <div class="card-header">
                 <div class="card-tools">
                     <router-link class="btn btn-info btn-sm" :to="'/user'">
-                        <i class="fas fa-arrow-left">   Regresar</i>
+                        <span><i class="fas fa-arrow-left"></i>Regresar</span>
                     </router-link>
                 </div>
             </div>
@@ -77,6 +77,16 @@
                                     </div>
                                 </div>
                             </div>
+                             <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label for="select-rol">Rol *</label>
+                                        <b-form-select v-model="fillEditUser.role_id" class="mb-3" id="select-rol">
+                                        <b-form-select-option :value="null">Seleccione un rol</b-form-select-option>
+                                        <b-form-select-option value= 1>Administrador</b-form-select-option>
+                                        <b-form-select-option value= 2>Consejero</b-form-select-option>
+                                        </b-form-select>
+                                    </div>
+                                </div>
                             <div class="col-md-12">
                                 <button class="btn btn-flat btn-secondary btnWidth"  @click="cancel"><i class="fa-solid fa-xmark"></i>  Cancelar</button>
                                 <button class="btn btn-flat btn-info btnWidth"  @click="editUserbyId"><i class="fa-solid fa-pen"></i> Editar</button>
@@ -131,8 +141,8 @@ export default {
             })
            this.$router.push('/user');
         },
-         getUser() {
-              axios.get( `/administration/user/getUser/${this.$route.params.id}`)
+         getUser($id) {
+              axios.get( `/administration/user/getUser/${id}`)
             .then(res => {
                     this.fillEditUser = res.data;
             })

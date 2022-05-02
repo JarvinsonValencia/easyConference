@@ -37,5 +37,5 @@ import Footer from './template/Footer.vue'
 </script>
 
 <style>
-
+  
 </style>

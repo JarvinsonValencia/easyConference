@@ -4,9 +4,27 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <router-link class="btn btn-info btn-sm" :to="'/user/create'">
-                        <span><i class="fa-solid fa-user-plus"></i> Nuevo</span>
-                    </router-link>
+                    <div>
+                           <b-button class="btn btn-info btn-sm" @click="openModal('modal-form-user')">
+                               <i class="fa-solid fa-user-plus"></i> Nuevo</b-button>
+                                                    <b-modal
+                                                        class="modal"
+                                                        id="modal-form-user"
+                                                        ref="modal"
+                                                        size="lg"
+                                                        for="form"
+                                                        title="Nuevo Usuario"
+                                                        @ok="this.$refs.userform.onSubmit()"
+                                                        cancel-disable
+                                                    ><Form ref="userform" v-model="showModal"
+                                                            />
+                                                    </b-modal>
+                                            
+                                             <!-- <router-link class="btn btn-info btn-sm" :to="'/user/create'">
+                                                <span><i class="fas fa-arrow-left"></i>Nuevo</span>
+                                            </router-link> -->
+                                   
+                    </div>  
                 </div>
             </div>
             <div class="card-body">
@@ -36,12 +54,17 @@
                                         <td v-text="item.email"></td>
                                        
                                         <td>
-                                            <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
-                                               <i class="fa-solid fa-user-pen"></i>
-                                            </router-link >
-                                            <router-link class="btn btn-danger btn-sm" :to="'/user'">
-                                                <i class="fa-solid fa-user-xmark"></i>
-                                            </router-link >
+                                            <!-- <div>
+                                                <b-button class="btn btn-info btn-sm" @click="openModal('modal-edit-user')">
+                                                    <i class="fa-solid fa-user-pen"></i></b-button>
+                                                         <div v-if="showModal">
+                                                             <EditForm v-model="showModal"
+                                                                id="modal-edit-user"/> 
+                                                         </div>
+                                                </div> -->
+                                                
+                                            <b-button class="btn btn-danger btn-sm" @click="deleteUser(item.id)">
+                                                    <i class="fa-solid fa-user-xmark"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -77,16 +100,23 @@
 </template>
 
 <script>
+import Form from './Form.vue'
+import EditForm from './EditForm.vue'
 export default {
     data(){
         return {
             listUsers: [],
             pageNumber: 0,
-            perPage: 5
+            perPage: 5,
+            showModal: false
         }
     },
     mounted(){
         this.getlistUsers();
+    },
+    components: {
+        Form,
+        // EditForm
     },
     computed: {
         //Obtener número de páginas
@@ -119,6 +149,7 @@ export default {
         getlistUsers(){
             axios.get('/administration/user/getListUsers')
             .then(res => {
+                console.log(res.data)
                 this.listUsers = res.data;
             })
         },
@@ -133,7 +164,39 @@ export default {
         },
         inicializarPaginacion(){
             this.pageNumber = 0;
-        }
+        },
+        deleteUser(id){
+            Swal.fire({
+                title: '¿Estás seguro de eliminar el usuario?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/administration/user/deleteUser/${id}`)
+                            .then(res =>{
+                                this.$router.go(this.$router.currentRoute)
+                            }).catch(error => {
+                                reject(error)
+                            })
+                        Swal.fire(
+                        'Eliminado!',
+                        'El usuario ha sido eliminado.',
+                        'success'
+                        )
+                }
+            }) 
+        },
+        openModal(modalId) {
+            this.showModal = true;
+            if (!modalId) return
+            this.$bvModal.show(modalId)   
+        },
+       
     }
 }
 </script>

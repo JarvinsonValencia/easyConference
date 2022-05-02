@@ -29,6 +29,7 @@
     "dependencies": {
         "@mycure/vue-jitsi-meet": "^0.0.7",
         "@vue/test-utils": "^1.3.0",
+        "bootstrap-vue": "^2.22.0",
         "element-ui": "^2.15.8",
         "evilscan": "^1.9.1",
         "laravel-mix": "^6.0.43",
@@ -36,7 +37,9 @@
         "router": "^1.3.6",
         "sweetalert2": "^11.4.8",
         "v-tooltip": "^2.1.3",
+        "vee-validate": "^3.4.14",
         "vue-router": "^3.5.3",
-        "vuelidate": "^0.7.7"
+        "vuelidate": "^0.7.7",
+        "vuex": "^2.5.0"
     }
 }

@@ -13,14 +13,14 @@ class CreateMeetingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('meetings', function (Blueprint $table) {
+        Schema::create('meets', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->dateTime('date');
             $table->string('purpose', 400);
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->bigInteger('client_id')->unsigned();
+            $table->bigInteger('client_id')->unsigned()->nullable();
 
             $table->foreign('client_id')->references('id')->on('clients');
 

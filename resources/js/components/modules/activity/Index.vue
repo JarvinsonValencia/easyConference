@@ -4,9 +4,18 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <router-link class="btn btn-info btn-sm" :to="'/user/create'">
-                        <span><i class="fa-solid fa-file-circle-plus"></i> Nuevo</span>
-                    </router-link>
+                    <div>
+                        <b-button class="btn btn-info btn-sm" @click="openModal('modal-form-activity')">
+                            <i class="fa-solid fa-file-circle-plus"></i> Nuevo</b-button>
+                                   <b-modal
+                                        class="modal"
+                                        id="modal-form-activity"
+                                        ref="modal"
+                                        size="lg"
+                                        title="Nueva Actividad"
+                                    ><Create />
+                                   </b-modal>
+                    </div>             
                 </div>
             </div>
             <div class="card-body">
@@ -31,15 +40,15 @@
                                         
                                         <td v-text="item.name"></td>
                                         <td v-text="item.estimated_date"></td>
-                                        <td v-text="item.username"></td>
+                                        <td v-text="item.user_id"></td>
                                         
                                         <td>
+                                            
                                             <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
                                                <i class="fa-solid fa-file-pen"></i>
                                             </router-link >
-                                            <router-link class="btn btn-danger btn-sm" :to="'/user'">
-                                                <i class="fa-solid fa-file-circle-xmark"></i>
-                                            </router-link >
+                                            <b-button class="btn btn-danger btn-sm" @click="deleteActivity(item.id)">
+                                                    <i class="fa-solid fa-file-circle-xmark"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -75,17 +84,23 @@
 </template>
 
 <script>
+import Create from './Create.vue'
 export default {
-        data(){
+    components: {
+        Create
+    },
+    data(){
         return {
             listActivities: [],
             pageNumber: 0,
-            perPage: 5
+            perPage: 5,
+            showModal: false
         }
     },
     mounted(){
         this.getListActivities();
     },
+   
     computed: {
         //Obtener número de páginas
         pageCount() {
@@ -117,8 +132,35 @@ export default {
         getListActivities(){
             axios.get('/administration/activity/getListActivities')
             .then(res => {
+                console.log(res.data)
                 this.listActivities = res.data;
             })
+        },
+        deleteActivity(id){
+            Swal.fire({
+                title: '¿Estás seguro de eliminar la actividad?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/administration/activity/deleteActivity/${id}`)
+                            .then(()=>{
+                                this.$router.go(this.$router.currentRoute)
+                            }).catch(error => {
+                                console.log(error)
+                            })
+                        Swal.fire(
+                        'Eliminado!',
+                        'La actividad ha sido eliminada.',
+                        'success'
+                        )
+                }
+            }) 
         },
         nextPage() {
             this.pageNumber++;
@@ -131,11 +173,19 @@ export default {
         },
         inicializarPaginacion(){
             this.pageNumber = 0;
-        }
+        },
+        openModal(modalId) {
+            if (!modalId) return
+            this.$bvModal.show(modalId)
+        },
+        closeModal(modalId) {
+            if (!modalId) return
+            this.$nextTick(() => this.$bvModal.hide(modalId))
+        },
     }
 }
 </script>
 
 <style>
-
+    
 </style>

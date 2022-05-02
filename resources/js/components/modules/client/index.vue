@@ -4,9 +4,21 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <router-link class="btn btn-info btn-sm" :to="'/user/create'">
+                    <!-- <router-link class="btn btn-info btn-sm" :to="'/user/create'">
                         <span><i class="fa-solid fa-circle-plus"></i> Nuevo</span>
-                    </router-link>
+                    </router-link> -->
+                    <div>
+                           <b-button class="btn btn-info btn-sm" @click="openModal('modal-form-client')">
+                               <i class="fa-solid fa-circle-plus"></i> Nuevo</b-button>
+                                       <b-modal
+                                            class="modal"
+                                            id="modal-form-client"
+                                            ref="modal"
+                                            size="lg"
+                                            title="Nuevo Cliente"
+                                    >
+                                    <Form/></b-modal>
+                    </div>  
                 </div>
             </div>
             <div class="card-body">
@@ -24,6 +36,7 @@
                                         <th>Documento</th>
                                         <th>Email</th>
                                         <th>Teléfono</th>
+                                        <th>Dirección</th>
                                         <th>Acciones</th>
                                     </tr> 
                                 </thead>
@@ -34,14 +47,14 @@
                                         <td v-text="item.document"></td>
                                         <td v-text="item.email"></td>
                                         <td v-text="item.phone"></td>
+                                        <td v-text="item.address"></td>
                                        
                                         <td>
                                             <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </router-link >
-                                            <router-link class="btn btn-danger btn-sm" :to="'/user'">
-                                                <i class="fa-solid fa-building-circle-xmark"></i>
-                                            </router-link >
+                                            <b-button class="btn btn-danger btn-sm" @click="deleteMeet(item.id)">
+                                                    <i class="fa-solid fa-building-circle-xmark"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -77,16 +90,21 @@
 </template>
 
 <script>
+import Form from './Form.vue'
 export default {
     data(){
         return {
             listClients: [],
             pageNumber: 0,
-            perPage: 5
+            perPage: 5,
+            showModal: false
         }
     },
     mounted(){
         this.getListClients();
+    },
+    components: {
+        Form
     },
     computed: {
         //Obtener número de páginas
@@ -122,6 +140,32 @@ export default {
                 this.listClients = res.data;
             })
         },
+        deleteMeet(id){
+            Swal.fire({
+                title: '¿Estás seguro de eliminar el cliente?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/administration/client/deleteClient/${id}`)
+                            .then(()=>{
+                                this.$router.go(this.$router.currentRoute)
+                            }).catch(error => {
+                                console.log(error)
+                            })
+                        Swal.fire(
+                        'Eliminado!',
+                        'El cliente ha sido eliminado.',
+                        'success'
+                        )
+                }
+            }) 
+        },
         nextPage() {
             this.pageNumber++;
         },
@@ -133,7 +177,12 @@ export default {
         },
         inicializarPaginacion(){
             this.pageNumber = 0;
-        }
+        },
+         openModal(modalId) {
+            if (!modalId) return
+            this.$bvModal.show(modalId)
+        },
+       
     }
 }
 </script>

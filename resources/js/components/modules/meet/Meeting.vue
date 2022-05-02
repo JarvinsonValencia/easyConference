@@ -1,0 +1,117 @@
+<template>
+    <div>
+        <b-tabs :small="true" v-model="tabIndex" >
+            <b-tab title="👨‍👩‍👧‍👦 Reunión" :title-link-class="getTabClass(0)">
+                <!-- <router-view :meet="meet-activity"></router-view> -->
+                <Meet></Meet>
+            </b-tab>
+            <b-tab title="🎧 Audio / Video" :title-link-class="getTabClass(1)">
+                <div class="jitsi-meet" id="jitsi-meet" align="center">
+                    <div id="meet" style="margin-top: 25px">
+                    <vue-jitsi-meet
+                        ref="jitsiRef"
+                        domain="meet.jit.si"
+                        :options="startJitsiMeet"
+                >   </vue-jitsi-meet>
+                    </div>
+                </div>
+            </b-tab>
+        </b-tabs>
+    </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+import { JitsiMeet } from '@mycure/vue-jitsi-meet';
+import Meet from '../meet/Meet.vue'
+export default {
+    data: () => ({
+        meet: null,
+        tabIndex: 0,
+    }),
+
+    mounted() {
+        //this.addJitsiApiScript();
+    },
+
+    components: {
+        VueJitsiMeet: JitsiMeet,
+        Meet
+    },
+
+    computed: {
+        ...mapGetters(['currentMeeting']),
+        startJitsiMeet() {
+            return {
+                roomName: 'nombreReunion',
+                width: 1000,
+                height: 550,
+                parentNode: document.getElementById('meet'),
+                configOverwrite: {},
+                configOverwrite: {
+                    startWithAudioMuted: true,
+                    disableProfile: true,
+                    toolbarButtons: ['camera', 'microphone'],
+                    hideConferenceTimer: true,
+                    disableSelfViewSettings: true,
+                    remoteVideoMenu: {
+                        disabled: true,
+                    },
+                    enableNoisyMicDetection: false
+                },
+                interfaceConfigOverwrite: {
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUESTS: false,
+                SHOW_CHROME_EXTENSION_BANNER: false
+                },
+                onload: this.onIFrameLoad
+            }
+        },
+    },
+
+    methods: {
+        getTabClass(idx) {
+            return this.tabIndex === idx ? ['bg-blue', 'text-white'] : ''
+        },
+
+        addJitsiApiScript() {
+            const script = document.createElement('script')
+            $(script).on('load', () => this.startJitsiMeet())
+            script.type = 'text/javascript'
+            script.src = 'https://meet.jit.si/external_api.js'
+            document.head.appendChild(script)
+        },
+
+        startJitsiMeet() {
+            const options = {
+                roomName: this.currentMeeting.name,
+                width: 1200,
+                height: 550,
+                parentNode: document.getElementById('meet'),
+                userInfo: {
+                    displayName: this.currentPerson.name,
+                },
+                configOverwrite: {
+                    startWithAudioMuted: true,
+                    disableProfile: true,
+                    toolbarButtons: ['camera', 'microphone'],
+                    hideConferenceTimer: true,
+                    disableSelfViewSettings: true,
+                    remoteVideoMenu: {
+                        disabled: true,
+                    },
+                },
+            }
+            this.meet = new JitsiMeetExternalAPI('meet.jit.si', options)
+            this.meet.addEventListener(
+                'videoConferenceJoined',
+                ({ roomName, id, displayName, avatarURL }) => {
+                    //Guardar el id en una coleccion para que el moderador la tenga disponible
+                    this.tabIndex = 0
+                }
+            )
+        },
+
+        
+    },
+}
+</script>

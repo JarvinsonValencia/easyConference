@@ -43,7 +43,7 @@
 
             <li class="nav-header">MENÚ</li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/jitsi'">
+                <router-link class="nav-link" :to="'/meet'">
                 <i class="fa-solid fa-video"></i>
                 <p>
                     Reuniones
@@ -60,7 +60,7 @@
                 </p>
                 </router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="user.role_id === 1">
                 <router-link class="nav-link" :to="'/user'">
                <i class="fa-solid fa-people-group"></i>
                 <p>
@@ -68,7 +68,7 @@
                 </p>
                 </router-link>
             </li>
-              <li class="nav-item">
+              <li class="nav-item" v-if="user.role_id === 1">
                 <router-link class="nav-link" :to="'/client'">
                <i class="fa-solid fa-city"></i>
                 <p>

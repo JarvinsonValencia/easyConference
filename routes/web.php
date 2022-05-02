@@ -23,10 +23,26 @@ use Illuminate\Support\Facades\Route;
   Route::get('/administration/user/getUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'getUser']);
   Route::post('/administration/user/setCreateUser', [App\Http\Controllers\Administration\usersController::class, 'setCreateUser']);
   Route::post('/administration/user/editUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'editUser']);
+  Route::delete('/administration/user/deleteUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'deleteUser']);
+
 
   Route::get('/administration/activity/getListActivities', [App\Http\Controllers\Administration\ActivitiesController::class, 'getListActivities']);
+  Route::post('/administration/activity/setCreateActivity', [App\Http\Controllers\Administration\ActivitiesController::class, 'setCreateActivity']);
+  Route::delete('/administration/activity/deleteActivity/{id}', [App\Http\Controllers\Administration\ActivitiesController::class, 'deleteActivity']);
 
   Route::get('/administration/client/getListClients', [App\Http\Controllers\Administration\ClientsController::class, 'getListClients']);
+  Route::post('/administration/client/setCreateClient', [App\Http\Controllers\Administration\ClientsController::class, 'setCreateClient']);
+  Route::delete('/administration/client/deleteClient/{id}', [App\Http\Controllers\Administration\ClientsController::class, 'deleteClient']);
+  
+  Route::get('/administration/meet/getListMeetings', [App\Http\Controllers\Administration\MeetingsController::class, 'getListMeetings']);
+  Route::post('/administration/meet/setCreateMeet', [App\Http\Controllers\Administration\MeetingsController::class, 'setCreateMeet']);
+  Route::delete('/administration/meet/deleteMeet/{id}', [App\Http\Controllers\Administration\MeetingsController::class, 'deleteMeet']);
+  
+  
+
+  Route::get('/administration/rol/getListRoles', [App\Http\Controllers\Administration\RolesController::class, 'getListRoles']);
+
+  
 //});
 
 Route::get('/{optional?}', function () {

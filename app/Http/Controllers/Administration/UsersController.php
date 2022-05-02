@@ -6,17 +6,33 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Throwable;
+use App\Models\Rol;
+Use Exception;
 
 
 class UsersController extends Controller
 {
     public function getListUsers(Request $request){
         try {
+        
             if($request->ajax()){
-                return User::all();
+               
+                $user = User::all();
+                $rol = Rol::all();
+
+                foreach($user as $u) {
+                    try {
+                        $rol = Rol::find($u->role_id);
+                        $u->role_id = $rol->name;
+    
+                         $listUsers[] = $u;
+                    }catch(Exception $e) {
+                        report($e);
+                    }
+                }
+                return $user;
             } 
-        }catch(Throwable $e){
+        }catch(Exception $e){
             report($e);
             return $e;
         }
@@ -27,7 +43,7 @@ class UsersController extends Controller
         try {
             $user = User::findOrFail($id);
             return response()->json($user);
-        }catch(Throwable $e){
+        }catch(Exception $e){
             report($e);
             return $e;
         }
@@ -36,20 +52,6 @@ class UsersController extends Controller
     public function setCreateUser(Request $request) {
        
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'document' => 'required',
-                'phone' => 'required',
-                'email' => 'required',
-                'username' => 'required',
-                'password' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect('/user/create')
-                ->withErrors($validator)
-                ->withInput();
-            }else {
                 $record = new User();
                 $record->name = $request->name;
                 $record->document = $request->document;
@@ -57,11 +59,11 @@ class UsersController extends Controller
                 $record->email = $request->email;
                 $record->username = $request->username;
                 $record->password = bcrypt($request->password);
+                $record->role_id = $request->role_id;
                 $record->save();
-               
-            }
-        }catch(Throwable $e){
-            report($e);
+                return response()->json($record);
+        }catch(Exception $e){
+            //report($e);
             return $e;
         }
     }
@@ -75,12 +77,22 @@ class UsersController extends Controller
             $record->email = $request->email;
             $record->username = $request->username;
             $record->password = bcrypt($request->password);
+            $record->role_id = $request->role_id;
             $record->save();
     
             return response()->json($record);
-        }catch(Throwable $e){
+        }catch(Exception $e){
             report($e);
             return $e;
         }
+    }
+
+    public function deleteUser($id) {
+       try {
+            $user = User::findorFail($id);
+            $user->delete();
+       }catch(Exception $e) {
+           return $e;
+       }
     }
 }
