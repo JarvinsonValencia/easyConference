@@ -3,7 +3,7 @@
         <div style="max-width: 99%">
             <b-row align-h="between" class="py-3 bg-info text-white">
                 <b-col cols="auto" class="pl-3"><i class="fas fa-home"></i> {{name}} </b-col>
-                <b-col cols="auto" class="pr-5"> <i class="fas fa-user"></i> {{user}} </b-col>
+                <b-col cols="auto" class="pr-5"> <i class="fas fa-user"></i> {{user.name}} </b-col>
                 <b-col cols="auto" class="pr-5">
                     <!-- <app-time-counter :start-date="currentMeeting.start_date"></app-time-counter> -->
                 </b-col>

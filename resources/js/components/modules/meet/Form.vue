@@ -74,9 +74,13 @@ export default {
             name: null,
             date: null,
             purpose: null,
+            userClient: null
         }
         };
     },
+
+    props: ['user'],
+
     validations: {
         fillCreateMeet: {
             date: {required},
@@ -110,6 +114,7 @@ export default {
       if (this.$v.fillCreateMeet.$anyError) {
         return;
       }
+        
         this.setRegisterMeet()
         this.$router.go(this.$router.currentRoute)
         //this.$nextTick(() => this.$bvModal.hide(modalId))
@@ -120,9 +125,12 @@ export default {
             name: this.fillCreateMeet.name,
             date: this.fillCreateMeet.date,
             purpose: this.fillCreateMeet.purpose,
+            client_id: this.user.client_id
         }
+       
         axios.post('/administration/meet/setCreateMeet', params)
             .then(res => {
+                console.log(res.data)
                this.listMeets.push(res.data)
                  Swal.fire({
                     icon: 'success',

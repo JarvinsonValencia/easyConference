@@ -14,10 +14,8 @@
                                                         size="lg"
                                                         for="form"
                                                         title="Nuevo Usuario"
-                                                        @ok="this.$refs.userform.onSubmit()"
                                                         cancel-disable
-                                                    ><Form ref="userform" v-model="showModal"
-                                                            />
+                                                    ><Form />
                                                     </b-modal>
                                             
                                              <!-- <router-link class="btn btn-info btn-sm" :to="'/user/create'">
@@ -54,14 +52,21 @@
                                         <td v-text="item.email"></td>
                                        
                                         <td>
-                                            <!-- <div>
-                                                <b-button class="btn btn-info btn-sm" @click="openModal('modal-edit-user')">
-                                                    <i class="fa-solid fa-user-pen"></i></b-button>
-                                                         <div v-if="showModal">
-                                                             <EditForm v-model="showModal"
-                                                                id="modal-edit-user"/> 
-                                                         </div>
-                                                </div> -->
+                                            <div>
+                                                <b-button class="btn btn-info btn-sm" @click="getUser(item.id)">
+                                                    <i class="fa-solid fa-user-pen">
+                                                        </i></b-button>
+                                                             <b-modal
+                                                                class="modal"
+                                                                id="modal-edit-user"
+                                                                ref="modal"
+                                                                size="lg"
+                                                                for="form"
+                                                                title="Editar Usuario"
+                                                                cancel-disable
+                                                            ><Form v-on:edit-user="getUser" />
+                                                            </b-modal>         
+                                                </div>
                                                 
                                             <b-button class="btn btn-danger btn-sm" @click="deleteUser(item.id)">
                                                     <i class="fa-solid fa-user-xmark"></i></b-button>
@@ -101,7 +106,6 @@
 
 <script>
 import Form from './Form.vue'
-import EditForm from './EditForm.vue'
 export default {
     data(){
         return {
@@ -153,18 +157,29 @@ export default {
                 this.listUsers = res.data;
             })
         },
+
         nextPage() {
             this.pageNumber++;
         },
+
         prevPage(){
             this.pageNumber--;
         },
+
         selectPage(page) {
             this.pageNumber = page;
         },
+
         inicializarPaginacion(){
             this.pageNumber = 0;
         },
+
+        getUser(id) {
+            //this.$refs.editUser.getUser(id);
+            this.$emit('edit-user', id);
+            this.openModal('modal-edit-user');
+        },
+
         deleteUser(id){
             Swal.fire({
                 title: '¿Estás seguro de eliminar el usuario?',

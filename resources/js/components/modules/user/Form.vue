@@ -1,16 +1,17 @@
 <template>
   <div>
-  
     <b-form @submit.stop="onSubmit">
        <b-row>
           <b-col cols="12" md="6">
             <b-form-group id="example-input-group-1" label="Nombre *" label-for="example-input-1">
+                 <div v-if="true" edit></div>
                   <b-form-input
                     id="example-input-1"
                     name="example-input-1"
                     v-model="$v.formUser.name.$model"
                     :state="validateState('name')"
                     aria-describedby="input-1-live-feedback"
+                     
                   ></b-form-input>
 
                   <b-form-invalid-feedback
@@ -99,19 +100,36 @@
           </b-col>
           
        </b-row>
-       <b-form-group id="example-input-group-2" label="Rol " label-for="example-input-2">
-              <b-form-select
-                id="example-input-2"
-                name="example-input-2"
-                v-model="$v.formUser.role_id.$model"
-                :state="validateState('role_id')"
-                aria-describedby="input-7-live-feedback"
-              ><b-form-select-option v-for="(item, index) in listRol" :key="index" value= item.id>{{item.name}}</b-form-select-option>
-              </b-form-select>
+       <b-row>
+         <b-col cols="12" md="6">
+          <b-form-group id="example-input-group-2" label="Rol " label-for="example-input-2">
+                  <b-form-select
+                    id="example-input-2"
+                    name="example-input-2"
+                    v-model="$v.formUser.role_id.$model"
+                    :state="validateState('role_id')"
+                    aria-describedby="input-7-live-feedback"
+                  ><b-form-select-option v-for="(item, index) in listRol" :key="index" :value= item.id>{{item.name}}</b-form-select-option>
+                  </b-form-select>
 
-              <b-form-invalid-feedback id="input-7-live-feedback">Este campo es requerido.</b-form-invalid-feedback>
-        </b-form-group>
-       
+                  <b-form-invalid-feedback id="input-7-live-feedback">Este campo es requerido.</b-form-invalid-feedback>
+            </b-form-group>
+         </b-col>
+          <b-col cols="12" md="6">
+          <b-form-group id="example-input-group-2" label="Cliente " label-for="example-input-2">
+                  <b-form-select
+                    id="example-input-2"
+                    name="example-input-2"
+                    v-model="$v.formUser.client_id.$model"
+                    :state="validateState('client_id')"
+                    aria-describedby="input-8-live-feedback"
+                  ><b-form-select-option v-for="(item, index) in listClients" :key="index" :value= item.id>{{item.name}}</b-form-select-option>
+                  </b-form-select>
+
+                  <b-form-invalid-feedback id="input-8-live-feedback">Este campo es requerido.</b-form-invalid-feedback>
+            </b-form-group>
+         </b-col>
+       </b-row>
         <div class="btn-submit" >
             <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="resetForm()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
             <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
@@ -128,7 +146,9 @@ export default {
         return {
         listRol: [],
         listUsers: [],
+        listClients: [],
         showmodal: false,
+        editForm: false,
         formUser: {
             name: null,
             food: null,
@@ -137,12 +157,16 @@ export default {
             phone: null,
             username: null,
             password: null,
-            role_id: null
-        }
-        };
+            role_id: null,
+            client_id:null
+        },
+      };
     },
     mounted(){
+        this.getlistClient();
         this.getlistRol();
+       // this.getUser(id);
+        
     },
     validations: {
         formUser: {
@@ -152,7 +176,8 @@ export default {
             email: { required, email },
             phone: { required },
             password: {required},
-            username: { required, minLength: minLength(3) }
+            username: { required, minLength: minLength(3) },
+            client_id: {required}
         }
     },
     methods: {
@@ -186,8 +211,15 @@ export default {
       if (this.$v.formUser.$anyError) {
         return;
       }
-        this.setRegisterUser()
-         this.$router.go(this.$router.currentRoute)
+      
+      if(this.editForm) {
+        this.editUserbyId();
+        this.editForm = false;
+      } else {
+        this.setRegisterUser();
+      }
+        
+        this.$router.go(this.$router.currentRoute)
         this.$nextTick(() => this.$bvModal.hide(modalId))
     },
 
@@ -198,7 +230,9 @@ export default {
             email: this.formUser.email,
             phone: this.formUser.phone,
             username: this.formUser.username,
-            role_id: parseInt(this.formUser.role_id)
+            password: this.formUser.password,
+            role_id: parseInt(this.formUser.role_id),
+            client_id: parseInt(this.formUser.client_id)
         }
         axios.post('/administration/user/setCreateUser', params)
             .then(res => {
@@ -223,7 +257,41 @@ export default {
         })
     },
 
-   
+     getlistClient(){
+       console.log("eeeeeeeeeeeeeeee")
+        axios.get('/administration/client/getListClients')
+        .then(res => {
+          console.log(res.data)
+            this.listClients = res.data;
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    editUserbyId(id){
+         
+           axios.post( `/administration/user/editUser/${this.$route.params.id}`, this.fillEditUser)
+          .then(res => {
+              Swal.fire({
+              icon: 'success',
+              title: 'Actualización exitosa',
+              showConfirmButton: false,
+              timer: 5000
+              })
+          })
+          this.$router.push('/user');
+      },
+
+      getUser(id) {
+           console.log(id + "eeeeeeeeee");
+          //   axios.get( `/administration/user/getUser/${id}`)
+          // .then(res => {
+          //         this.formUser = res.data;
+          //         this.editForm = true;
+          // }).catch(error => {
+          //   console.log(error)
+          // })
+      },
   }
 }
 </script>

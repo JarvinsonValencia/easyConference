@@ -3,7 +3,7 @@
         <b-tabs :small="true" v-model="tabIndex" >
             <b-tab title="👨‍👩‍👧‍👦 Reunión" :title-link-class="getTabClass(0)">
                 <!-- <router-view :meet="meet-activity"></router-view> -->
-                <Meet></Meet>
+                <Meet :user="user"></Meet>
             </b-tab>
             <b-tab title="🎧 Audio / Video" :title-link-class="getTabClass(1)">
                 <div class="jitsi-meet" id="jitsi-meet" align="center">
@@ -29,6 +29,8 @@ export default {
         tabIndex: 0,
     }),
 
+    props:['user'],
+
     mounted() {
         //this.addJitsiApiScript();
     },
@@ -50,7 +52,7 @@ export default {
                 configOverwrite: {
                     startWithAudioMuted: true,
                     disableProfile: true,
-                    toolbarButtons: ['camera', 'microphone'],
+                   // toolbarButtons: ['camera', 'microphone', ],
                     hideConferenceTimer: true,
                     disableSelfViewSettings: true,
                     remoteVideoMenu: {

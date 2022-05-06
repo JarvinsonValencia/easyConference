@@ -16,7 +16,6 @@ class ClientsController extends Controller
                 return Client::all();
             } 
         }catch(Throwable $e){
-            report($e);
             return $e;
         }
         

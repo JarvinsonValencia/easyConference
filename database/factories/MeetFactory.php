@@ -17,8 +17,8 @@ class MeetFactory extends Factory
             'title' => $this->faker->sentence(),
             'purpose' => $this->faker->text(),
             'date' => $this->faker->date(),
-            'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
+            'client_id' => rand(1,5)
 
         ];
     }

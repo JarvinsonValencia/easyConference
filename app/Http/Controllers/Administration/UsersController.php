@@ -59,6 +59,7 @@ class UsersController extends Controller
                 $record->username = $request->username;
                 $record->password = bcrypt($request->password);
                 $record->role_id = $request->role_id;
+                $record->client_id = $request->client_id;
                 $record->save();
                 return response()->json($record);
         }catch(Exception $e){
@@ -77,6 +78,7 @@ class UsersController extends Controller
             $record->username = $request->username;
             $record->password = bcrypt($request->password);
             $record->role_id = $request->role_id;
+            $record->client_id = $request->client_id;
             $record->save();
     
             return response()->json($record);

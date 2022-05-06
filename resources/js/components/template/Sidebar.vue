@@ -43,7 +43,7 @@
 
             <li class="nav-header">MENÚ</li>
             <li class="nav-item">
-                <router-link class="nav-link" :to="'/meet'">
+                <router-link class="nav-link" :to="{ name: 'meet', params: {user: user }}">
                 <i class="fa-solid fa-video"></i>
                 <p>
                     Reuniones

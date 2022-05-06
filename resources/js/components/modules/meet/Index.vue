@@ -17,7 +17,7 @@
                                         size="lg"
                                         title="Nueva Reunión"
 
-                                    > <Form ></Form>
+                                    > <Form :user="user"></Form>
                                     </b-modal>
                     </div> 
                 </div>
@@ -48,10 +48,10 @@
                                         <td v-text="item.date"></td>
                                        
                                         <td>
-                                            <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
+                                            <router-link class="btn btn-info btn-sm" >
                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </router-link >
-                                            <router-link class="btn btn-info btn-sm" :name="item.title" :to="'/meeting'">
+                                            <router-link class="btn btn-info btn-sm" :name="item.title" :to="{ name: 'meeting', params: {user: user }}">
                                                <i class="fa-solid fa-arrow-right"></i>
                                             </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteMeet(item.id)">
@@ -98,14 +98,14 @@ export default {
             listMeetings: [],
             pageNumber: 0,
             perPage: 5,
-            showModal: false
+            showModal: false,
         }
     },
     mounted(){
-        this.getListMeetings();
+        this.getListMeetings(this.user.client_id);
     },
 
-    props: ['name'],
+    props: ['user'],
     
     components: {
         Form,
@@ -137,14 +137,16 @@ export default {
             return pagesArray;
         }
     },
+
     methods: {
-        getListMeetings(){
-            axios.get('/administration/meet/getListMeetings')
+        getListMeetings(client_id){
+        
+            axios.get(`/administration/meet/getListMeetings/${client_id}`)
             .then(res => {
-                this.listMeetings = res.data;
-                
+                this.listMeetings = res.data; 
             })
         },
+
         deleteMeet(id){
             Swal.fire({
                 title: '¿Estás seguro de eliminar la reunión?',

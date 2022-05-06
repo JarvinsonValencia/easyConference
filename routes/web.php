@@ -34,7 +34,9 @@ use Illuminate\Support\Facades\Route;
   Route::post('/administration/client/setCreateClient', [App\Http\Controllers\Administration\ClientsController::class, 'setCreateClient']);
   Route::delete('/administration/client/deleteClient/{id}', [App\Http\Controllers\Administration\ClientsController::class, 'deleteClient']);
   
-  Route::get('/administration/meet/getListMeetings', [App\Http\Controllers\Administration\MeetingsController::class, 'getListMeetings']);
+ 
+  
+  Route::get('/administration/meet/getListMeetings/{id}', [App\Http\Controllers\Administration\MeetingsController::class, 'getListMeetings']);
   Route::post('/administration/meet/setCreateMeet', [App\Http\Controllers\Administration\MeetingsController::class, 'setCreateMeet']);
   Route::delete('/administration/meet/deleteMeet/{id}', [App\Http\Controllers\Administration\MeetingsController::class, 'deleteMeet']);
   

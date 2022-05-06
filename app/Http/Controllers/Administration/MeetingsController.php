@@ -10,13 +10,18 @@ use Throwable;
 
 class MeetingsController extends Controller
 {
-    public function getListMeetings(Request $request){
+    public function getListMeetings($client_id){
         try {
-            if($request->ajax()){
-                return Meet::all();
-            } 
+            $listMeets = array();
+           
+                $meet = Meet::all();
+                    foreach($meet as $m){
+                        if($m->client_id == $client_id){
+                           array_push($listMeets, $m);
+                        }
+                    }
+            return $listMeets;
         }catch(Throwable $e){
-            report($e);
             return $e;
         }
     }
@@ -28,9 +33,9 @@ class MeetingsController extends Controller
             $meet->title = $request->name;
             $meet->date = $request->date;
             $meet->purpose = $request->purpose;
-            $meet->start_date = now();
+            $meet->client_id = $request->client_id;
             $meet->end_date = now();
-
+            
             $meet->save();
             return response()->json($meet);
         }catch(Exception $e){

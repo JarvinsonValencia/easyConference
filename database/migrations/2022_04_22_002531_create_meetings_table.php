@@ -18,7 +18,6 @@ class CreateMeetingsTable extends Migration
             $table->string('title');
             $table->dateTime('date');
             $table->string('purpose', 400);
-            $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->bigInteger('client_id')->unsigned()->nullable();
 
