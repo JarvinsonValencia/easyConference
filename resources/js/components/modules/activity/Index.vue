@@ -44,7 +44,7 @@
                                         
                                         <td>
                                             
-                                            <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
+                                            <router-link class="btn btn-info btn-sm">
                                                <i class="fa-solid fa-file-pen"></i>
                                             </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteActivity(item.id)">

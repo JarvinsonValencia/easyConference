@@ -50,7 +50,7 @@
                                         <td v-text="item.address"></td>
                                        
                                         <td>
-                                            <router-link class="btn btn-info btn-sm" :to="{name:'user.edit', params:{id: item.id}}">
+                                            <router-link class="btn btn-info btn-sm" >
                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteMeet(item.id)">
