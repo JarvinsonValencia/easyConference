@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 
   Route::post('/authenticate/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 
-  Route::get('/administration/user/getListUsers', [App\Http\Controllers\Administration\usersController::class, 'getListUsers']);
-  Route::get('/administration/user/getUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'getUser']);
-  Route::post('/administration/user/setCreateUser', [App\Http\Controllers\Administration\usersController::class, 'setCreateUser']);
-  Route::post('/administration/user/editUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'editUser']);
-  Route::delete('/administration/user/deleteUser/{id}', [App\Http\Controllers\Administration\usersController::class, 'deleteUser']);
+  Route::get('/administration/user/getListUsers', [App\Http\Controllers\Administration\UsersController::class, 'getListUsers']);
+  Route::get('/administration/user/getUser/{id}', [App\Http\Controllers\Administration\UsersController::class, 'getUser']);
+  Route::post('/administration/user/setCreateUser', [App\Http\Controllers\Administration\UsersController::class, 'setCreateUser']);
+  Route::post('/administration/user/editUser/{id}', [App\Http\Controllers\Administration\UsersController::class, 'editUser']);
+  Route::delete('/administration/user/deleteUser/{id}', [App\Http\Controllers\Administration\UsersController::class, 'deleteUser']);
 
 
   Route::get('/administration/activity/getListActivities', [App\Http\Controllers\Administration\ActivitiesController::class, 'getListActivities']);
