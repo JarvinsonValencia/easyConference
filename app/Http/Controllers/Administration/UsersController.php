@@ -11,31 +11,32 @@ Use Exception;
 
 class UsersController extends Controller
 {
-    public function getListUsers(Request $request){
-        try {
-        
-            if($request->ajax()){
-               
-                $user = User::all();
-                $rol = Rol::all();
+    public function getListUsers($role_id, $client_id){
+        try {   
+            $listUsers = array();
+            $user = User::all();
+            $rol = Rol::all();
 
                 foreach($user as $u) {
                     try {
-                        $rol = Rol::find($u->role_id);
-                        $u->role_id = $rol->name;
-    
-                         $listUsers[] = $u;
+                        if ($role_id == 1) {
+                            $rol = Rol::find($u->role_id);
+                            $u->role_id = $rol->name;
+                            array_push($listUsers, $u); 
+                        }
+                        else if($u->client_id == $client_id) {
+                            $rol = Rol::find($u->role_id);
+                            $u->role_id = $rol->name;
+                            array_push($listUsers, $u);  
+                        }
                     }catch(Exception $e) {
-                        report($e);
+                        return $e;
                     }
                 }
-                return $user;
-            } 
+                return $listUsers;
         }catch(Exception $e){
-            report($e);
             return $e;
-        }
-        
+        }  
     }
 
     public function getUser($id) {
@@ -83,7 +84,6 @@ class UsersController extends Controller
     
             return response()->json($record);
         }catch(Exception $e){
-            report($e);
             return $e;
         }
     }

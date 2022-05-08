@@ -17,7 +17,7 @@
                                         size="lg"
                                         title="Nueva Reunión"
 
-                                    > <Form :user="user"></Form>
+                                    > <Form :user="user" @closeModal="closeModal('modal-form-meet')"></Form>
                                     </b-modal>
                     </div> 
                 </div>
@@ -93,6 +93,7 @@
 <script>
 import Form from './Form.vue'
 export default {
+
     data(){
         return {
             listMeetings: [],
@@ -101,6 +102,7 @@ export default {
             showModal: false,
         }
     },
+
     mounted(){
         this.getListMeetings(this.user.client_id);
     },
@@ -110,6 +112,7 @@ export default {
     components: {
         Form,
     },
+
     computed: {
         //Obtener número de páginas
         pageCount() {
@@ -139,6 +142,7 @@ export default {
     },
 
     methods: {
+
         getListMeetings(client_id){
         
             axios.get(`/administration/meet/getListMeetings/${client_id}`)
@@ -173,22 +177,31 @@ export default {
                 }
             }) 
         },
+
         nextPage() {
             this.pageNumber++;
         },
+
         prevPage(){
             this.pageNumber--;
         },
+
         selectPage(page) {
             this.pageNumber = page;
         },
+
         inicializarPaginacion(){
             this.pageNumber = 0;
         },
+
         openModal(modalId) {
             if (!modalId) return
             this.$bvModal.show(modalId)
         },
+
+        closeModal(modalId) {
+            this.$bvModal.hide(modalId)
+        }
        
     }
 }

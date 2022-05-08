@@ -52,11 +52,11 @@
                     </b-form-group>
        
                     <div class="btn-submit" >
-                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="resetForm()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModal()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
                         <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                     </div>
                 </b-form>
-            </b-modal>
+           
   </div>
   
 </template>
@@ -76,8 +76,10 @@ export default {
     },
 
     mounted(){
-       this.getlistUsers();
+       this.getlistUsers(this.user.role_id, this.user.client_id);
     },
+
+    props: ['user'],
 
     validations: {
         fillCreateActivity: {
@@ -140,12 +142,16 @@ export default {
           //this.$nextTick(() => this.$bvModal.hide(modalId))
     },
 
-    getlistUsers(){
-        axios.get('/administration/user/getListUsers')
+    getlistUsers(role_id, client_id){
+        axios.get(`/administration/user/getListUsers/${role_id}/${client_id}`)
         .then(res => {
             this.listUsers = res.data;
         })
     },
+
+    closeModal() {
+        this.$emit('closeModal');
+    }
 
   }
 }

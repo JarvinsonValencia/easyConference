@@ -55,7 +55,7 @@
                     </b-form-group>
 
                     <div class="btn-submit" >
-                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="resetForm()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModel()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
                         <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                     </div>
                 </b-form>
@@ -143,6 +143,10 @@ export default {
           })
           //this.$nextTick(() => this.$bvModal.hide(modalId))
     },
+
+    closeModel() {
+        this.$emit('closeModal');
+    }
   }
 }
     

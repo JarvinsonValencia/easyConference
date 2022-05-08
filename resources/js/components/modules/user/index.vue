@@ -15,7 +15,7 @@
                                                         for="form"
                                                         title="Nuevo Usuario"
                                                         cancel-disable
-                                                    ><Form />
+                                                    ><Form @closeModal="closeModal('modal-form-user')"/>
                                                     </b-modal>
                                             
                                              <!-- <router-link class="btn btn-info btn-sm" :to="'/user/create'">
@@ -53,7 +53,7 @@
                                        
                                         <td>
                                             <div>
-                                                <b-button class="btn btn-info btn-sm" @click="getUser(item.id)">
+                                                <b-button class="btn btn-info btn-sm" @click="openModal('modal-edit-user')">
                                                     <i class="fa-solid fa-user-pen">
                                                         </i></b-button>
                                                              <b-modal
@@ -63,8 +63,7 @@
                                                                 size="lg"
                                                                 for="form"
                                                                 title="Editar Usuario"
-                                                                cancel-disable
-                                                            ><Form v-on:edit-user="getUser" />
+                                                            ><Form  @closeModal="closeModal('modal-edit-user')"/>
                                                             </b-modal>         
                                                 </div>
                                                 
@@ -112,12 +111,14 @@ export default {
             listUsers: [],
             pageNumber: 0,
             perPage: 5,
-            showModal: false
         }
     },
     mounted(){
-        this.getlistUsers();
+        this.getlistUsers(this.user.role_id, this.user.client_id);
     },
+
+    props:['user'],
+
     components: {
         Form,
         // EditForm
@@ -149,9 +150,11 @@ export default {
             return pagesArray;
         }
     },
+
     methods: {
-        getlistUsers(){
-            axios.get('/administration/user/getListUsers')
+
+        getlistUsers(role_id, client_id){
+            axios.get(`/administration/user/getListUsers/${role_id}/${client_id}`)
             .then(res => {
                 console.log(res.data)
                 this.listUsers = res.data;
@@ -176,7 +179,7 @@ export default {
 
         getUser(id) {
             //this.$refs.editUser.getUser(id);
-            this.$emit('edit-user', id);
+            //this.$emit('edit-user', id);
             this.openModal('modal-edit-user');
         },
 
@@ -206,11 +209,15 @@ export default {
                 }
             }) 
         },
+
         openModal(modalId) {
-            this.showModal = true;
             if (!modalId) return
             this.$bvModal.show(modalId)   
         },
+
+        closeModal(modalId) {
+            this.$bvModal.hide(modalId)
+        }
        
     }
 }

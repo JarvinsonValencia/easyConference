@@ -52,7 +52,7 @@
                 </router-link>
             </li>
              <li class="nav-item">
-                <router-link class="nav-link" :to="'/activity'">
+                <router-link class="nav-link" :to="{ name: 'activity', params: {user: user }}">
                 <i class="fa-solid fa-list-check"></i>
                 <p>
                     Actividades
@@ -60,8 +60,8 @@
                 </p>
                 </router-link>
             </li>
-            <li class="nav-item" v-if="user.role_id === 1">
-                <router-link class="nav-link" :to="'/user'">
+             <li class="nav-item" v-if="user.role_id === 1">
+                <router-link class="nav-link" :to="{ name: 'user', params: {user: user }}">
                <i class="fa-solid fa-people-group"></i>
                 <p>
                     Usuarios

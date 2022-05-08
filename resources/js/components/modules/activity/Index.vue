@@ -13,7 +13,7 @@
                                         ref="modal"
                                         size="lg"
                                         title="Nueva Actividad"
-                                    ><Create />
+                                    ><Create :user="user"  @closeModal="closeModal('modal-form-activity')"/>
                                    </b-modal>
                     </div>             
                 </div>
@@ -89,16 +89,19 @@ export default {
     components: {
         Create
     },
+
+    props:['user'],
+
     data(){
         return {
             listActivities: [],
             pageNumber: 0,
             perPage: 5,
-            showModal: false
         }
     },
+
     mounted(){
-        this.getListActivities();
+        this.getListActivities(this.user.client_id);
     },
    
     computed: {
@@ -129,11 +132,13 @@ export default {
         }
     },
     methods: {
-        getListActivities(){
-            axios.get('/administration/activity/getListActivities')
+        getListActivities(client_id){
+            axios.get(`/administration/activity/getListActivities/${client_id}`)
             .then(res => {
                 console.log(res.data)
                 this.listActivities = res.data;
+            }).catch(error => {
+                console.log(error)
             })
         },
         deleteActivity(id){
@@ -175,13 +180,13 @@ export default {
             this.pageNumber = 0;
         },
         openModal(modalId) {
+            
             if (!modalId) return
             this.$bvModal.show(modalId)
         },
         closeModal(modalId) {
-            if (!modalId) return
-            this.$nextTick(() => this.$bvModal.hide(modalId))
-        },
+            this.$bvModal.hide(modalId)
+        }
     }
 }
 </script>

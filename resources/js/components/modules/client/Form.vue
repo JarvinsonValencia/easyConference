@@ -97,7 +97,7 @@
                             >   Este campo es requerido.</b-form-invalid-feedback>
                         </b-form-group>
                          <div class="btn-submit" >
-                            <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="resetForm()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                            <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModal()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
                             <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                         </div>
                 </b-form>
@@ -186,6 +186,10 @@ export default {
           })
           //this.$nextTick(() => this.$bvModal.hide(modalId))
     },
+
+    closeModal() {
+        this.$emit('closeModal');
+    }
   }
 }
 </script>

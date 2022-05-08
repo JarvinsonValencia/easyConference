@@ -30,12 +30,27 @@ class MeetingsController extends Controller
 
         try {
             $meet = new Meet();
-            $meet->title = $request->name;
+            $meet->title = $request->title;
             $meet->date = $request->date;
             $meet->purpose = $request->purpose;
             $meet->client_id = $request->client_id;
             $meet->end_date = now();
             
+            $meet->save();
+            return response()->json($meet);
+        }catch(Exception $e){
+            return $e;
+        }
+    }
+
+    public function editMeet(Request $request, $id) {
+        try{
+            $meet = Meet::findorFail($id);
+            $meet->title = $request->title;
+            $meet->date = $request->date;
+            $meet->purpose = $request->purpose;
+            $meet->client_id = $request->client_id;
+            $meet->end_date = now();
             $meet->save();
             return response()->json($meet);
         }catch(Exception $e){

@@ -35,7 +35,22 @@ class ClientsController extends Controller
         }catch (Exception $e) {
             return $e;
         }
+    }
 
+    public function editClient(Request $request, $id) {
+        try {
+            $client = Client::findorFail($id);
+            $client->name = $request->name;
+            $client->document = $request->document;
+            $client->email = $request->email;
+            $client->phone = $request->phone;
+            $client->address = $request->address;
+            
+            $client->save();
+            return response()->json($client);
+        }catch (Exception $e) {
+            return $e;
+        }
     }
 
     public function deleteClient($id) {

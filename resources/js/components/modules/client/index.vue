@@ -16,8 +16,7 @@
                                             ref="modal"
                                             size="lg"
                                             title="Nuevo Cliente"
-                                    >
-                                    <Form/></b-modal>
+                                    ><Form @closeModal="closeModal('modal-form-client')"/></b-modal>
                     </div>  
                 </div>
             </div>
@@ -92,6 +91,7 @@
 <script>
 import Form from './Form.vue'
 export default {
+    
     data(){
         return {
             listClients: [],
@@ -100,12 +100,15 @@ export default {
             showModal: false
         }
     },
+
     mounted(){
         this.getListClients();
     },
+
     components: {
         Form
     },
+    
     computed: {
         //Obtener número de páginas
         pageCount() {
@@ -119,6 +122,7 @@ export default {
                 end = start + this.perPage;
             return this.listClients.slice(start, end);
         },
+
         pageList(){
             let a = this.listClients.length,
                 b = this.perPage;
@@ -133,13 +137,16 @@ export default {
             return pagesArray;
         }
     },
+
     methods: {
+
         getListClients(){
             axios.get('/administration/client/getListClients')
             .then(res => {
                 this.listClients = res.data;
             })
         },
+
         deleteMeet(id){
             Swal.fire({
                 title: '¿Estás seguro de eliminar el cliente?',
@@ -166,22 +173,31 @@ export default {
                 }
             }) 
         },
+
         nextPage() {
             this.pageNumber++;
         },
+
         prevPage(){
             this.pageNumber--;
         },
+
         selectPage(page) {
             this.pageNumber = page;
         },
+
         inicializarPaginacion(){
             this.pageNumber = 0;
         },
-         openModal(modalId) {
+
+        openModal(modalId) {
             if (!modalId) return
             this.$bvModal.show(modalId)
         },
+
+        closeModal(modalId) {
+            this.$bvModal.hide(modalId)
+        }
        
     }
 }

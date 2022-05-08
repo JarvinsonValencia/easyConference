@@ -6,10 +6,10 @@ Vue.use(VueRouter)
 export default new VueRouter({
     routes: [
         { path: '/login', name: 'login', component: require('./components/modules/authenticate/Login.vue').default},
-        { path: '/user', component: require('./components/modules/user/index.vue').default},
+        { path: '/user', name: 'user', component: require('./components/modules/user/index.vue').default, props:true},
         { path: '/client', name: 'client', component: require('./components/modules/client/index.vue').default},
         { path: '/', name: 'dashboard.index', component: require('./components/modules/dashboard/index.vue').default},
-        { path: '/activity', name: 'activity', component: require('./components/modules/activity/Index.vue').default},
+        { path: '/activity', name: 'activity', component: require('./components/modules/activity/Index.vue').default, props:true},
         { path: '/activity/created', name: 'activity.created', component: require('./components/modules/activity/Create.vue').default},
         { path: '/meet', name: 'meet', component: require('./components/modules/meet/Index.vue').default, props:true},
         { path: '/meeting/', name: 'meeting', component: require('./components/modules/meet/Meeting.vue').default, props:true},
