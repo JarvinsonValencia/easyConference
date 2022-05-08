@@ -51,21 +51,10 @@
                                         <td v-text="item.username"></td>
                                         <td v-text="item.email"></td>
                                        
-                                        <td>
-                                            <div>
-                                                <b-button class="btn btn-info btn-sm" @click="openModal('modal-edit-user')">
-                                                    <i class="fa-solid fa-user-pen">
-                                                        </i></b-button>
-                                                             <b-modal
-                                                                class="modal"
-                                                                id="modal-edit-user"
-                                                                ref="modal"
-                                                                size="lg"
-                                                                for="form"
-                                                                title="Editar Usuario"
-                                                            ><Form  @closeModal="closeModal('modal-edit-user')"/>
-                                                            </b-modal>         
-                                                </div>
+                                        <td>             
+                                            <router-link class="btn btn-info btn-sm" :to="{name: 'user.edit', params:{id: item.id}}">
+                                                <span><i class="fa-solid fa-user-pen"></i></span>
+                                            </router-link>
                                                 
                                             <b-button class="btn btn-danger btn-sm" @click="deleteUser(item.id)">
                                                     <i class="fa-solid fa-user-xmark"></i></b-button>
@@ -177,12 +166,6 @@ export default {
             this.pageNumber = 0;
         },
 
-        getUser(id) {
-            //this.$refs.editUser.getUser(id);
-            //this.$emit('edit-user', id);
-            this.openModal('modal-edit-user');
-        },
-
         deleteUser(id){
             Swal.fire({
                 title: '¿Estás seguro de eliminar el usuario?',
@@ -191,7 +174,7 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Sí, eliminar'
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -217,6 +200,7 @@ export default {
 
         closeModal(modalId) {
             this.$bvModal.hide(modalId)
+            this.getlistUsers(this.user.role_id, this.user.client_id)
         }
        
     }

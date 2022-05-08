@@ -44,7 +44,7 @@
                                         
                                         <td>
                                             
-                                            <router-link class="btn btn-info btn-sm">
+                                            <router-link class="btn btn-info btn-sm" :to="{ name: 'activity.edit', params: {id: item.id, user: user},}">
                                                <i class="fa-solid fa-file-pen"></i>
                                             </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteActivity(item.id)">
@@ -101,7 +101,7 @@ export default {
     },
 
     mounted(){
-        this.getListActivities(this.user.client_id);
+        this.getListActivities(this.user.role_id, this.user.client_id);
     },
    
     computed: {
@@ -132,10 +132,9 @@ export default {
         }
     },
     methods: {
-        getListActivities(client_id){
-            axios.get(`/administration/activity/getListActivities/${client_id}`)
+        getListActivities(role_id, client_id){
+            axios.get(`/administration/activity/getListActivities/${role_id}/${client_id}`)
             .then(res => {
-                console.log(res.data)
                 this.listActivities = res.data;
             }).catch(error => {
                 console.log(error)
@@ -149,13 +148,12 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Sí, eliminar!'
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
                         axios.delete(`/administration/activity/deleteActivity/${id}`)
                             .then(()=>{
-                                this.$router.go(this.$router.currentRoute)
                             }).catch(error => {
                                 console.log(error)
                             })
@@ -166,6 +164,7 @@ export default {
                         )
                 }
             }) 
+            this.getListActivities(this.user.client_id);
         },
         nextPage() {
             this.pageNumber++;
@@ -185,7 +184,8 @@ export default {
             this.$bvModal.show(modalId)
         },
         closeModal(modalId) {
-            this.$bvModal.hide(modalId)
+            this.$bvModal.hide(modalId);
+            this.getListActivities(this.user.client_id);
         }
     }
 }

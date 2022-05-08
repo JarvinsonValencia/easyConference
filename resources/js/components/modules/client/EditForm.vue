@@ -1,6 +1,23 @@
 <template>
-    <div class="container">
-                <b-form ref="form" @submit.stop.prevent="onSubmit">
+  <div class="content-header">
+   
+    <div class="content container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools" >
+                    <router-link class="btn btn-info btn-sm" :to="'/user'">
+                        <span><i class="fas fa-arrow-left"></i>Regresar</span>
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Editar Cliente</h3>
+                        </div>
+                        <div class="card-body">
+    <b-form ref="form" @submit.stop.prevent="onSubmit">
                     <b-row>
                         <b-col cols="12" md="6">
                             <b-form-group 
@@ -97,30 +114,36 @@
                             >   Este campo es requerido.</b-form-invalid-feedback>
                         </b-form-group>
                          <div class="btn-submit" >
-                            <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModal()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                            <router-link class="btn btn-flat btn-secondary btnWidth" :to="{name: 'client'}">
+                                <span><i class="fa-solid fa-xmark"></i>Cancelar</span>
+                            </router-link>
                             <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                         </div>
                 </b-form>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </template>
+
 <script>
 import { required, minLength, maxLength, email, numeric } from "vuelidate/lib/validators";
 export default {
-    data() {
+     data() {
         return {
-            fillCreateClient: {
-                    name: '',
-                    document: '',
-                    email: '',
-                    phone: '',
-                    address: ''
-            },
+            fillCreateClient: {},
             listClients: [],
-            name: '',
-            nameState: null,
-            submittedNames: []
         };
     },
+    
+    mounted() {
+        this.getClient();
+    },
+
     validations: {
         fillCreateClient: {
             name: {required, minLength: minLength(3)},
@@ -131,64 +154,47 @@ export default {
         },
         listMeet: []
     },
+
     methods: {
-    validateState(name) {
-        const { $dirty, $error } = this.$v.fillCreateClient[name];
-        
-        return $dirty ? !$error : null;
-    },
+        validateState(name) {
+            const { $dirty, $error } = this.$v.fillCreateClient[name];
+            
+            return $dirty ? !$error : null;
+        },
 
-    resetForm() {
-      this.fillCreateClient = {
-        name: null,
-        document: null,
-        email: null,
-        phone: null,
-        address: null
-      };
-     // this.$router.go(this.$router.currentRoute)
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
-    },
-    
-    onSubmit(bvModalEvent) {
-        
-      bvModalEvent.preventDefault()
-      this.$v.fillCreateClient.$touch();
-      if (this.$v.fillCreateClient.$anyError) {
-        return;
-      }
-        this.setRegisterClient();
-        this.closeModal();
-    },
-
-    setRegisterClient(){
-        const params = {
-            name: this.fillCreateClient.name,
-            document: this.fillCreateClient.document,
-            email: this.fillCreateClient.email,
-            phone: this.fillCreateClient.phone,
-            address: this.fillCreateClient.address,
+        onSubmit(bvModalEvent) {
+            
+        bvModalEvent.preventDefault()
+        this.$v.fillCreateClient.$touch();
+        if (this.$v.fillCreateClient.$anyError) {
+            return;
         }
-        axios.post('/administration/client/setCreateClient', params)
-            .then(res => {
-               this.listClients.push(res.data)
-                 Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-          }).catch(error => {
-            console.log(error)
-          })
-    },
+            this.editClient()
+        },
 
-    closeModal() {
-        this.$emit('closeModal');
+        editClient(){
+            axios.post(`/administration/client/editClient/${this.$route.params.id}`, this.fillCreateClient)
+                .then(res => {
+                this.listClients.push(res.data)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización exitosa',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+            }).catch(error => {
+                console.log(error)
+            })
+            this.$router.push('/client');
+        },
+
+        getClient() {
+              axios.get( `/administration/client/getClient/${this.$route.params.id}`)
+            .then(res => {
+                    this.fillCreateClient = res.data;
+            })
+        },
     }
-  }
 }
 </script>
 

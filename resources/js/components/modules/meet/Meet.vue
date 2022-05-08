@@ -48,7 +48,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-                <Activity></Activity>
+                <Activity :user="user"></Activity>
         </div>
     </div>
 </template>

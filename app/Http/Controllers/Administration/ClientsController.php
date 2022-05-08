@@ -21,6 +21,15 @@ class ClientsController extends Controller
         
     }
 
+    public function getClient($id) {
+        try {
+            $client = Client::findOrFail($id);
+            return response()->json($client);
+        }catch(Exception $e){
+            return $e;
+        }
+    }
+
     public function setCreateClient(Request $request) {
         try {
             $client = new Client();
@@ -60,6 +69,6 @@ class ClientsController extends Controller
         }catch(Exception $e) {
             return $e;
         }
-     }
+    }
      
 }

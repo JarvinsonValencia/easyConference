@@ -1,7 +1,23 @@
 <template>
-    <div class="container">
-         
-                <b-form ref="form" @submit.stop.prevent="onSubmit">
+      <div class="content-header">
+   
+    <div class="content container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools" >
+                    <router-link class="btn btn-info btn-sm" :to="'/activity'">
+                        <span><i class="fas fa-arrow-left"></i>Regresar</span>
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Editar Cliente</h3>
+                        </div>
+                        <div class="card-body">
+                 <b-form ref="form" @submit.stop.prevent="onSubmit">
                     <b-form-group 
                         id="example-input-group-1" 
                         label="Nombre " 
@@ -52,24 +68,28 @@
                     </b-form-group>
        
                     <div class="btn-submit" >
-                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModal()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                        <router-link class="btn btn-flat btn-secondary btnWidth" :to="{name: 'activity'}">
+                            <span><i class="fa-solid fa-xmark"></i>Cancelar</span>
+                        </router-link>
                         <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                     </div>
                 </b-form>
-           
-  </div>
-  
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
+
 <script>
-    import { required, minLength} from "vuelidate/lib/validators";
+import { required, minLength} from "vuelidate/lib/validators";
 export default {
     data() {
         return {
-            fillCreateActivity: {
-                    name: null,
-                    description: null,
-                    user_id: null
-            },
+            fillCreateActivity: {},
             listActivity: [],
             listUsers: [],
         };
@@ -77,6 +97,7 @@ export default {
 
     mounted(){
        this.getlistUsers(this.user.role_id, this.user.client_id);
+       this.getActivity();
     },
 
     props: ['user'],
@@ -90,54 +111,53 @@ export default {
     },
 
     methods: {
-    validateState(name) {
-        const { $dirty, $error } = this.$v.fillCreateActivity[name];
-        
-        return $dirty ? !$error : null;
-    },
+        validateState(name) {
+            const { $dirty, $error } = this.$v.fillCreateActivity[name];
+            
+            return $dirty ? !$error : null;
+        },
 
-    onSubmit(bvModalEvent) {
-        
-      bvModalEvent.preventDefault()
-      this.$v.fillCreateActivity.$touch();
-      if (this.$v.fillCreateActivity.$anyError) {
-        return;
-      }
-        this.setRegisterActivity();
-        this.closeModal();
-    },
-
-    setRegisterActivity(){
-         const params = {
-                name: this.fillCreateActivity.name,
-                description: this.fillCreateActivity.description,
-                user_id: parseInt(this.fillCreateActivity.user_id)
+        onSubmit(bvModalEvent) {
+            
+        bvModalEvent.preventDefault()
+        this.$v.fillCreateActivity.$touch();
+        if (this.$v.fillCreateActivity.$anyError) {
+            return;
         }
-        axios.post('/administration/activity/setCreateActivity', params)
+            this.editActivity();
+        },
+
+        editActivity(){
+            axios.post(`/administration/activity/editActivity/${this.$route.params.id}`, this.fillCreateActivity)
+                .then(res => {
+                    console.log(res.data)
+                    this.listActivity.push(res.data)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización exitosa',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }).catch(error => {
+                    console.log(error)
+            })
+            this.$router.push('/activity');
+        },
+
+        getlistUsers(role_id, client_id){
+            axios.get(`/administration/user/getListUsers/${role_id}/${client_id}`)
+            .then(res => {
+                this.listUsers = res.data;
+            })
+        },
+
+        getActivity() {
+              axios.get( `/administration/activity/getActivity/${this.$route.params.id}`)
             .then(res => {
                 console.log(res.data)
-               this.listActivity.push(res.data)
-                 Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }).catch(error => {
-                console.log(error)
-          })
-    },
-
-    getlistUsers(role_id, client_id){
-        axios.get(`/administration/user/getListUsers/${role_id}/${client_id}`)
-        .then(res => {
-            this.listUsers = res.data;
-        })
-    },
-
-    closeModal() {
-        this.$emit('closeModal');
-    }
+                    this.fillCreateActivity = res.data;
+            })
+        },
 
   }
 }

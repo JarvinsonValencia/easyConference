@@ -123,7 +123,8 @@
                     v-model="$v.formUser.client_id.$model"
                     :state="validateState('client_id')"
                     aria-describedby="input-8-live-feedback"
-                  ><b-form-select-option v-for="(item, index) in listClients" :key="index" :value= item.id>{{item.name}}</b-form-select-option>
+                  >
+                  <b-form-select-option v-for="(item, index) in listClients" :key="index" :value= item.id>{{item.name}}</b-form-select-option>
                   </b-form-select>
 
                   <b-form-invalid-feedback id="input-8-live-feedback">Este campo es requerido.</b-form-invalid-feedback>
@@ -181,7 +182,8 @@ export default {
         }
     },
     methods: {
-        validateState(name) {
+      
+    validateState(name) {
         const { $dirty, $error } = this.$v.formUser[name];
         
         return $dirty ? !$error : null;
@@ -212,15 +214,8 @@ export default {
         return;
       }
       
-      if(this.editForm) {
-        this.editUserbyId();
-        this.editForm = false;
-      } else {
-        this.setRegisterUser();
-      }
-        
-        this.$router.go(this.$router.currentRoute)
-        this.$nextTick(() => this.$bvModal.hide(modalId))
+      this.setRegisterUser();
+      this.closeModal();
     },
 
     setRegisterUser(){
@@ -236,6 +231,7 @@ export default {
         }
         axios.post('/administration/user/setCreateUser', params)
             .then(res => {
+              console.log(res.data)
                this.listUsers.push(res.data)
                
           }).catch(error => {
@@ -258,7 +254,7 @@ export default {
     },
 
      getlistClient(){
-       console.log("eeeeeeeeeeeeeeee")
+
         axios.get('/administration/client/getListClients')
         .then(res => {
           console.log(res.data)
@@ -268,34 +264,10 @@ export default {
         })
     },
 
-    editUserbyId(id){
-         
-           axios.post( `/administration/user/editUser/${this.$route.params.id}`, this.fillEditUser)
-          .then(res => {
-              Swal.fire({
-              icon: 'success',
-              title: 'Actualización exitosa',
-              showConfirmButton: false,
-              timer: 5000
-              })
-          })
-          this.$router.push('/user');
-      },
 
-      getUser(id) {
-           console.log(id + "eeeeeeeeee");
-          //   axios.get( `/administration/user/getUser/${id}`)
-          // .then(res => {
-          //         this.formUser = res.data;
-          //         this.editForm = true;
-          // }).catch(error => {
-          //   console.log(error)
-          // })
-      },
-
-      closeModal() {
-        this.$emit('closeModal');
-      }
+    closeModal() {
+      this.$emit('closeModal');
+    }
   }
 }
 </script>

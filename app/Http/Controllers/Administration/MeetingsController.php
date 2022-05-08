@@ -10,18 +10,30 @@ use Throwable;
 
 class MeetingsController extends Controller
 {
-    public function getListMeetings($client_id){
+    public function getListMeetings($role_id, $client_id){
         try {
             $listMeets = array();
            
                 $meet = Meet::all();
                     foreach($meet as $m){
-                        if($m->client_id == $client_id){
+                        if($role_id == 1) {
+                            array_push($listMeets, $m);
+                        }
+                        else if($m->client_id == $client_id){
                            array_push($listMeets, $m);
                         }
                     }
             return $listMeets;
         }catch(Throwable $e){
+            return $e;
+        }
+    }
+
+    public function getMeet($id) {
+        try {
+            $meet = Meet::findOrFail($id);
+            return response()->json($meet);
+        }catch(Exception $e){
             return $e;
         }
     }
@@ -49,7 +61,7 @@ class MeetingsController extends Controller
             $meet->title = $request->title;
             $meet->date = $request->date;
             $meet->purpose = $request->purpose;
-            $meet->client_id = $request->client_id;
+            $meet->client_id = (int)$request->client_id;
             $meet->end_date = now();
             $meet->save();
             return response()->json($meet);

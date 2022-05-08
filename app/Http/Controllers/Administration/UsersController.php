@@ -60,7 +60,7 @@ class UsersController extends Controller
                 $record->username = $request->username;
                 $record->password = bcrypt($request->password);
                 $record->role_id = $request->role_id;
-                $record->client_id = $request->client_id;
+                $record->client_id = null;
                 $record->save();
                 return response()->json($record);
         }catch(Exception $e){
@@ -71,6 +71,7 @@ class UsersController extends Controller
 
     public function editUser(Request $request, $id) {
         try {
+            
             $record = User::findOrFail($id);
             $record->name = $request->name;
             $record->document = $request->document;
@@ -78,8 +79,8 @@ class UsersController extends Controller
             $record->email = $request->email;
             $record->username = $request->username;
             $record->password = bcrypt($request->password);
-            $record->role_id = $request->role_id;
-            $record->client_id = $request->client_id;
+            $record->role_id = (int)$request->role_id;
+            $record->client_id = (int)$request->client_id;
             $record->save();
     
             return response()->json($record);

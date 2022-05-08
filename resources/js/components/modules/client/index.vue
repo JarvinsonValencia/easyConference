@@ -49,7 +49,7 @@
                                         <td v-text="item.address"></td>
                                        
                                         <td>
-                                            <router-link class="btn btn-info btn-sm" >
+                                            <router-link class="btn btn-info btn-sm" :to="{ name: 'client.edit', params: {id: item.id}}">
                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteMeet(item.id)">
@@ -155,7 +155,7 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Sí, eliminar!'
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -197,6 +197,7 @@ export default {
 
         closeModal(modalId) {
             this.$bvModal.hide(modalId)
+             this.getListClients();
         }
        
     }

@@ -1,7 +1,23 @@
 <template>
-    <b-container fluid>
-           
-                <b-form ref="form" @submit.stop.prevent="onSubmit">
+        <div class="content-header">
+   
+    <div class="content container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools" >
+                    <router-link class="btn btn-info btn-sm" :to="'/meet'">
+                        <span><i class="fas fa-arrow-left"></i>Regresar</span>
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Editar Reunión</h3>
+                        </div>
+                        <div class="card-body">
+         <b-form ref="form" @submit.stop.prevent="onSubmit">
                     
                     <b-form-group 
                         id="example-input-group-1" 
@@ -55,28 +71,33 @@
                     </b-form-group>
 
                     <div class="btn-submit" >
-                        <b-button  class="btn btn-flat btn-secondary btnWidth"  @click="closeModel()"><i class="fa-solid fa-xmark"></i> Cancelar</b-button>
+                        <router-link class="btn btn-flat btn-secondary btnWidth" :to="{name: 'meet'}">
+                            <span><i class="fa-solid fa-xmark"></i>Cancelar</span>
+                        </router-link>
                         <b-button class="btn btn-flat btn-info btnWidth" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</b-button>
                     </div>
                 </b-form>
-           
-  </b-container>
-  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
+
 <script>
-import { required, minLength} from "vuelidate/lib/validators";
+import { required, minLength } from "vuelidate/lib/validators";
 export default {
-    data() {
+     data() {
         return {
             listMeets: [],
-            showmodal: false,
-            fillCreateMeet: {
-                title: null,
-                date: null,
-                purpose: null,
-                userClient: null
-            }
+            fillCreateMeet: {}
         };
+    },
+
+    mounted() {
+        this.getMeet();
     },
 
     props: ['user'],
@@ -93,51 +114,48 @@ export default {
         const { $dirty, $error } = this.$v.fillCreateMeet[name];
         
         return $dirty ? !$error : null;
-    },
+        },
 
-    onSubmit(bvModalEvent) {
-        
-      bvModalEvent.preventDefault()
-      this.$v.fillCreateMeet.$touch();
-      if (this.$v.fillCreateMeet.$anyError) {
-        return;
-      }
-        
-        this.setRegisterMeet();
-        this.closeModel();
-       
-    },
-
-    setRegisterMeet(){
-        const params = {
-            title: this.fillCreateMeet.title,
-            date: this.fillCreateMeet.date,
-            purpose: this.fillCreateMeet.purpose,
-            client_id: this.user.client_id
+        onSubmit(bvModalEvent) {
+            
+        bvModalEvent.preventDefault()
+        this.$v.fillCreateMeet.$touch();
+        if (this.$v.fillCreateMeet.$anyError) {
+            return;
         }
-       
-        axios.post('/administration/meet/setCreateMeet', params)
-            .then(res => {
-                console.log(res.data)
-               this.listMeets.push(res.data)
-                 Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }).catch(error => {
-                console.log(error)
-          })
-    },
+            
+            this.editMeet()
+            //this.$router.go(this.$router.currentRoute)
+            //this.$nextTick(() => this.$bvModal.hide(modalId))
+        },
 
-    closeModel() {
-        this.$emit('closeModal');
+        editMeet(){
+        
+            axios.post(`/administration/meet/editMeet/${this.$route.params.id}`, this.fillCreateMeet)
+                .then(res => {
+                    
+                    this.listMeets.push(res.data)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización exitosa',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }).catch(error => {
+                    console.log(error)
+            })
+            this.$router.push('/meet');
+        },
+
+        getMeet() {
+            axios.get( `/administration/meet/getMeet/${this.$route.params.id}`)
+             .then(res => {
+                 console.log(res.data)
+                this.fillCreateMeet = res.data;
+            })
+        },
     }
-  }
 }
-    
-
 </script>
 
 <style>

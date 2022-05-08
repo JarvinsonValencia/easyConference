@@ -48,7 +48,7 @@
                                         <td v-text="item.date"></td>
                                        
                                         <td>
-                                            <router-link class="btn btn-info btn-sm" >
+                                            <router-link class="btn btn-info btn-sm" :to="{ name: 'meet.edit', params: {id: item.id}}">
                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </router-link >
                                             <router-link class="btn btn-info btn-sm" :name="item.title" :to="{ name: 'meeting', params: {user: user }}">
@@ -104,7 +104,7 @@ export default {
     },
 
     mounted(){
-        this.getListMeetings(this.user.client_id);
+        this.getListMeetings(this.user.role_id, this.user.client_id);
     },
 
     props: ['user'],
@@ -143,9 +143,9 @@ export default {
 
     methods: {
 
-        getListMeetings(client_id){
+        getListMeetings(role_id, client_id){
         
-            axios.get(`/administration/meet/getListMeetings/${client_id}`)
+            axios.get(`/administration/meet/getListMeetings/${role_id}/${client_id}`)
             .then(res => {
                 this.listMeetings = res.data; 
             })
@@ -159,7 +159,7 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Sí, eliminar'
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -200,7 +200,8 @@ export default {
         },
 
         closeModal(modalId) {
-            this.$bvModal.hide(modalId)
+            this.$bvModal.hide(modalId);
+            this.getListMeetings(this.user.client_id);
         }
        
     }
