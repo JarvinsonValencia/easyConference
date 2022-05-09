@@ -46,7 +46,7 @@
                 <router-link class="nav-link" :to="{ name: 'meet', params: {user: user }}">
                 <i class="fa-solid fa-video"></i>
                 <p>
-                    Reuniones
+                    Reuniones !!! test
                     <span class="badge badge-info right"></span>
                 </p>
                 </router-link>
