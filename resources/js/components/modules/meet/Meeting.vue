@@ -5,7 +5,7 @@
                 <!-- <router-view :meet="meet-activity"></router-view> -->
                 <Meet :user="user"></Meet>
             </b-tab>
-            <b-tab title="🎧 Audio / Video" :title-link-class="getTabClass(1)">
+            <b-tab title="🎧 Audio" :title-link-class="getTabClass(1)">
                 <div class="jitsi-meet" id="jitsi-meet" align="center">
                     <div id="meet" style="margin-top: 25px">
                     <vue-jitsi-meet
