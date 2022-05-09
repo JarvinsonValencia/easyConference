@@ -161,7 +161,7 @@ export default {
                     if (result.isConfirmed) {
                         axios.delete(`/administration/client/deleteClient/${id}`)
                             .then(()=>{
-                                this.$router.go(this.$router.currentRoute)
+                                this.getListClients();
                             }).catch(error => {
                                 console.log(error)
                             })

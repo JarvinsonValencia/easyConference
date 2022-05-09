@@ -61,7 +61,7 @@ class MeetingsController extends Controller
             $meet->title = $request->title;
             $meet->date = $request->date;
             $meet->purpose = $request->purpose;
-            $meet->client_id = (int)$request->client_id;
+            $meet->client_id = $request->client_id;
             $meet->end_date = now();
             $meet->save();
             return response()->json($meet);

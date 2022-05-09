@@ -52,10 +52,11 @@ class UsersTest extends TestCase
     $user = User::factory()->create();
     $response = $this->post('/administration/user/editUser/' . $user->id, [
       'name' => 'Test update',
-      'document' => 'Test document',
+      'document' => 12345,
       'phone' => 'Test phone',
       'email' => 'Test email',
-      'username' => 'Test password'
+      'username' => 'Test Username',
+      'password' => 'Test password'
     ]);
         $response->assertOk();
         $response->assertStatus(200);
@@ -63,12 +64,11 @@ class UsersTest extends TestCase
         $this->assertCount(1, User::all());
 
         $user = $user->fresh();
-
-        $this->assertEquals($user->name, 'Test update');
+        $this->assertEquals($user->username, 'Test Username');
   }
 
    /**@test */
-   public function test_delete_user(){
+  public function test_delete_user(){
     $user = User::factory()->create();
     $this->delete('/administration/user/deleteUser/' . $user->id )
         ->assertOk()

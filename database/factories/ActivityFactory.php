@@ -17,7 +17,7 @@ class ActivityFactory extends Factory
             'name' => $this->faker->sentence(),
             'description' => $this->faker->text(),
             'estimated_date' => now(),
-            'user_id' => rand(1,10)
+            //'user_id' => rand(1,10)
             
             
         ];

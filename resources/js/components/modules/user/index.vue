@@ -180,7 +180,7 @@ export default {
                     if (result.isConfirmed) {
                         axios.delete(`/administration/user/deleteUser/${id}`)
                             .then(res =>{
-                                this.$router.go(this.$router.currentRoute)
+                                this.getlistUsers(this.user.role_id, this.user.client_id);
                             }).catch(error => {
                                 reject(error)
                             })

@@ -165,7 +165,7 @@ export default {
                     if (result.isConfirmed) {
                         axios.delete(`/administration/meet/deleteMeet/${id}`)
                             .then(()=>{
-                                this.$router.go(this.$router.currentRoute)
+                                this.getListMeetings(this.user.role_id, this.user.client_id);
                             }).catch(error => {
                                 console.log(error)
                             })

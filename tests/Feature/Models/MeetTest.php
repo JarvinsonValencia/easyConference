@@ -31,7 +31,7 @@ class MeetTest extends TestCase
         ]);
             $response->assertOk();
             $response->assertStatus(200);
-           // $this->assertCount(1, Meet::all());
+            $this->assertCount(1, Meet::all());
 
             $meet = Meet::first();
             $this->assertEquals($meet->title, 'Test title');

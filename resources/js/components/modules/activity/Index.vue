@@ -154,6 +154,7 @@ export default {
                     if (result.isConfirmed) {
                         axios.delete(`/administration/activity/deleteActivity/${id}`)
                             .then(()=>{
+                                 this.getListActivities(this.user.role_id, this.user.client_id);
                             }).catch(error => {
                                 console.log(error)
                             })
@@ -163,7 +164,7 @@ export default {
                         'success'
                         )
                     }
-                    this.getListActivities(this.user.role_id, this.user.client_id);
+                    
             }) 
            
         },

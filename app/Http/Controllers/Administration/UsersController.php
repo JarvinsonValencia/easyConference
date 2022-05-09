@@ -72,15 +72,15 @@ class UsersController extends Controller
     public function editUser(Request $request, $id) {
         try {
             
-            $record = User::findOrFail($id);
+            $record = User::findorFail($id);
             $record->name = $request->name;
             $record->document = $request->document;
             $record->phone = $request->phone;
             $record->email = $request->email;
             $record->username = $request->username;
             $record->password = bcrypt($request->password);
-            $record->role_id = (int)$request->role_id;
-            $record->client_id = (int)$request->client_id;
+            $record->role_id = $request->role_id;
+            $record->client_id = $request->client_id;
             $record->save();
     
             return response()->json($record);
