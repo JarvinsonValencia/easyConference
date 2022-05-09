@@ -162,9 +162,10 @@ export default {
                         'La actividad ha sido eliminada.',
                         'success'
                         )
-                }
+                    }
+                    this.getListActivities(this.user.role_id, this.user.client_id);
             }) 
-            this.getListActivities(this.user.role_id, this.user.client_id);
+           
         },
         nextPage() {
             this.pageNumber++;
