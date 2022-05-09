@@ -164,7 +164,7 @@ export default {
                         )
                 }
             }) 
-            this.getListActivities(this.user.client_id);
+            this.getListActivities(this.user.role_id, this.user.client_id);
         },
         nextPage() {
             this.pageNumber++;
@@ -185,7 +185,7 @@ export default {
         },
         closeModal(modalId) {
             this.$bvModal.hide(modalId);
-            this.getListActivities(this.user.client_id);
+            this.getListActivities(this.user.role_id, this.user.client_id);
         }
     }
 }

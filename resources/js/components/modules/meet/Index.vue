@@ -201,7 +201,7 @@ export default {
 
         closeModal(modalId) {
             this.$bvModal.hide(modalId);
-            this.getListMeetings(this.user.client_id);
+            this.getListMeetings(this.user.role_id, this.user.client_id);
         }
        
     }
