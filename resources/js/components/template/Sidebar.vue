@@ -55,7 +55,7 @@
                 <router-link class="nav-link" :to="{ name: 'activity', params: {user: user }}">
                 <i class="fa-solid fa-list-check"></i>
                 <p>
-                    Actividades
+                    Actividades !!
                     <span class="badge badge-info right"></span>
                 </p>
                 </router-link>
