@@ -48,12 +48,12 @@
                                         <td v-text="item.date"></td>
                                        
                                         <td>
-                                            <!-- <router-link class="btn btn-info btn-sm" :to="{ name: 'meet.edit', params: {id: item.id}}">
+                                            <router-link class="btn btn-info btn-sm" :to="{ name: 'meet.edit', params: {id: item.id}}">
                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </router-link > -->
-                                            <!-- <router-link class="btn btn-info btn-sm" :name="item.title" :to="{ name: 'meeting', params: {user: user }}">
+                                            </router-link >
+                                            <router-link class="btn btn-info btn-sm" :name="item.title" :to="{ name: 'meeting', params: {user: user }}">
                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </router-link > -->
+                                            </router-link >
                                             <b-button class="btn btn-danger btn-sm" @click="deleteMeet(item.id)">
                                                     <i class="fa-solid fa-circle-xmark"></i></b-button>
                                         </td>
