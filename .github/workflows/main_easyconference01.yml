@@ -20,8 +20,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: fileinfo, pdo_mysql
-      -  name: Setup PHP
 
       - name: Check if composer.json exists
         id: check_files
@@ -58,5 +56,5 @@ jobs:
         with:
           app-name: 'easyconference01'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_14214846E10D4DCBA0FCC0A46F5D6F28 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6C8A97469C3A4BA3A27D5F930AA6E6C7 }}
           package: .
