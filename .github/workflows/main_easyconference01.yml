@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'easyconference01'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_86A3FFA53AE24FA2A5DD5C74ADABCC98 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_399BF9C99E7D465BA653D3A1CC6D77DE }}
           package: .
