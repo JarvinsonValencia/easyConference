@@ -103,7 +103,7 @@ export default {
         }
     },
     mounted(){
-        this.getlistUsers(this.user.role_id, this.user.client_id);
+        this.getlistUsers(this.$store.state.user.role_id, this.$store.state.user.client_id);
     },
 
     props:['user'],

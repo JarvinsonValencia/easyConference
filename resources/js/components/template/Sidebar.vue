@@ -46,7 +46,7 @@
                 <router-link class="nav-link" :to="{ name: 'meet', params: {user: user }}">
                 <i class="fa-solid fa-video"></i>
                 <p>
-                    Reuniones !!! test
+                    Reuniones 
                     <span class="badge badge-info right"></span>
                 </p>
                 </router-link>
@@ -55,7 +55,7 @@
                 <router-link class="nav-link" :to="{ name: 'activity', params: {user: user }}">
                 <i class="fa-solid fa-list-check"></i>
                 <p>
-                    Actividades !!
+                    Actividades 
                     <span class="badge badge-info right"></span>
                 </p>
                 </router-link>
@@ -94,6 +94,9 @@ export default {
                 fullscreenLoading: false
             }
     },
+    mounted(){
+        this.testVuex()
+    },
     methods: {
         logout(){
             this.fullscreenLoading = true;
@@ -113,6 +116,9 @@ export default {
                         this.fullscreenLoading = false;
                     }
             })
+        },
+        testVuex(){
+            this.$store.state.user = this.user;
         }
     },
 }

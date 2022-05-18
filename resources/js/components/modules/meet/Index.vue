@@ -26,7 +26,7 @@
                 <div class="container-fluid">
                      <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Reuniones Test!!</h3>
+                            <h3 class="card-title">Reuniones </h3>
                         </div>
                         <div class="card-body table-responsive">
                             <template v-if="listMeetings.length">
@@ -104,7 +104,7 @@ export default {
     },
 
     mounted(){
-        this.getListMeetings(this.user.role_id, this.user.client_id);
+        this.getListMeetings(this.$store.state.user.role_id, this.$store.state.user.client_id);
     },
 
     props: ['user'],

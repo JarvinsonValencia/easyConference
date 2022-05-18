@@ -101,7 +101,7 @@ export default {
     },
 
     mounted(){
-        this.getListActivities(this.user.role_id, this.user.client_id);
+        this.getListActivities(this.$store.state.user.role_id, this.$store.state.user.client_id);
     },
    
     computed: {

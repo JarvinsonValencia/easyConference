@@ -40,6 +40,9 @@ window.Swal = Swal;
 import VTooltip from 'v-tooltip'
 window.Vue.use(VTooltip);
 
+import store from './store'
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -61,6 +64,7 @@ Vue.component('Activity', require('./components/modules/activity/Index.vue').def
  */
 import router from './routes'
 const app = new Vue({
+    store,
     el: '#app',
     router
 });
