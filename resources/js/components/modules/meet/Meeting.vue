@@ -1,19 +1,20 @@
 <template>
     <div>
-        <b-tabs :small="true" v-model="tabIndex" >
+        <b-tabs :small="true" v-model="tabIndex">
             <b-tab title="👨‍👩‍👧‍👦 Reunión" :title-link-class="getTabClass(0)">
                 <!-- <router-view :meet="meet-activity"></router-view> -->
                 <Meet :user="user"></Meet>
             </b-tab>
-            <b-tab title="🎧 Audio!" :title-link-class="getTabClass(1)">
+            <b-tab title="🎧 Audio! " :title-link-class="getTabClass(1)">
                 <div class="jitsi-meet" id="jitsi-meet" align="center">
                     <h1>{{$store.state.name}}</h1>
                     <div id="meet" style="margin-top: 25px">
-                    <vue-jitsi-meet
-                        ref="jitsiRef"
-                        domain="meet.jit.si"
-                        :options="startJitsiMeet"
-                >   </vue-jitsi-meet>
+                        <vue-jitsi-meet
+                            ref="jitsiRef"
+                            domain="meet.jit.si"
+                            :options="startJitsiMeet"
+                        >
+                        </vue-jitsi-meet>
                     </div>
                 </div>
             </b-tab>
@@ -21,59 +22,63 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import { JitsiMeet } from '@mycure/vue-jitsi-meet';
-import Meet from '../meet/Meet.vue'
+import { mapGetters } from "vuex";
+import { JitsiMeet } from "@mycure/vue-jitsi-meet";
+import Meet from "../meet/Meet.vue";
 export default {
     data: () => ({
         meet: null,
         tabIndex: 0,
+        userName: "",
     }),
 
-    props:['user'],
+    props: ["user"],
 
     mounted() {
         //this.addJitsiApiScript();
+        this.getName();
     },
 
     components: {
         VueJitsiMeet: JitsiMeet,
-        Meet
+        Meet,
     },
 
     computed: {
-        ...mapGetters(['currentMeeting']),
+        ...mapGetters(["currentMeeting"]),
         startJitsiMeet() {
             return {
-                roomName: 'nombreReunion',
+                roomName: "nombreReunion",
                 width: 1000,
                 height: 550,
-                parentNode: document.getElementById('meet'),
-                configOverwrite: {},
+                parentNode: document.getElementById("meet"),
+                userInfo: {
+                    displayName: this.userName,
+                },
                 configOverwrite: {
                     startWithAudioMuted: true,
                     disableProfile: true,
-                   // toolbarButtons: ['camera', 'microphone', ],
+                    // toolbarButtons: ['camera', 'microphone', ],
                     hideConferenceTimer: true,
                     disableSelfViewSettings: true,
                     remoteVideoMenu: {
                         disabled: true,
                     },
-                    enableNoisyMicDetection: false
+                    enableNoisyMicDetection: false,
                 },
                 interfaceConfigOverwrite: {
-                SHOW_JITSI_WATERMARK: false,
-                SHOW_WATERMARK_FOR_GUESTS: false,
-                SHOW_CHROME_EXTENSION_BANNER: false
+                    SHOW_JITSI_WATERMARK: false,
+                    SHOW_WATERMARK_FOR_GUESTS: false,
+                    SHOW_CHROME_EXTENSION_BANNER: false,
                 },
-                onload: this.onIFrameLoad
-            }
+                onload: this.onIFrameLoad,
+            };
         },
     },
 
     methods: {
         getTabClass(idx) {
-            return this.tabIndex === idx ? ['bg-blue', 'text-white'] : ''
+            return this.tabIndex === idx ? ["bg-blue", "text-white"] : "";
         },
 
         name(){
@@ -81,44 +86,16 @@ export default {
         },
 
         addJitsiApiScript() {
-            const script = document.createElement('script')
-            $(script).on('load', () => this.startJitsiMeet())
-            script.type = 'text/javascript'
-            script.src = 'https://meet.jit.si/external_api.js'
-            document.head.appendChild(script)
+            const script = document.createElement("script");
+            $(script).on("load", () => this.startJitsiMeet());
+            script.type = "text/javascript";
+            script.src = "https://meet.jit.si/external_api.js";
+            document.head.appendChild(script);
         },
 
-        startJitsiMeet() {
-            const options = {
-                roomName: this.currentMeeting.name,
-                width: 1200,
-                height: 550,
-                parentNode: document.getElementById('meet'),
-                userInfo: {
-                    displayName: this.currentPerson.name,
-                },
-                configOverwrite: {
-                    startWithAudioMuted: true,
-                    disableProfile: true,
-                    toolbarButtons: ['camera', 'microphone'],
-                    hideConferenceTimer: true,
-                    disableSelfViewSettings: true,
-                    remoteVideoMenu: {
-                        disabled: true,
-                    },
-                },
-            }
-            this.meet = new JitsiMeetExternalAPI('meet.jit.si', options)
-            this.meet.addEventListener(
-                'videoConferenceJoined',
-                ({ roomName, id, displayName, avatarURL }) => {
-                    //Guardar el id en una coleccion para que el moderador la tenga disponible
-                    this.tabIndex = 0
-                }
-            )
+        getName() {
+            this.userName = this.$store.state.user.name;
         },
-
-        
     },
-}
+};
 </script>
