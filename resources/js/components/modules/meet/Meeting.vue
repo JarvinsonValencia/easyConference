@@ -7,6 +7,7 @@
             </b-tab>
             <b-tab title="🎧 Audio!" :title-link-class="getTabClass(1)">
                 <div class="jitsi-meet" id="jitsi-meet" align="center">
+                    <h1>{{$store.state.name}}</h1>
                     <div id="meet" style="margin-top: 25px">
                     <vue-jitsi-meet
                         ref="jitsiRef"
@@ -73,6 +74,10 @@ export default {
     methods: {
         getTabClass(idx) {
             return this.tabIndex === idx ? ['bg-blue', 'text-white'] : ''
+        },
+
+        name(){
+            return $store.state.user.name;
         },
 
         addJitsiApiScript() {
