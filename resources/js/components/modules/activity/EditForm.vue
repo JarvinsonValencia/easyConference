@@ -6,7 +6,7 @@
             <div class="card-header">
                 <div class="card-tools" >
                     <router-link class="btn btn-info btn-sm" :to="'/activity'">
-                        <!-- <span><i class="fas fa-arrow-left"></i>Regresar</span> -->
+                        <span><i class="fas fa-arrow-left"></i>Regresar</span>
                     </router-link>
                 </div>
             </div>
