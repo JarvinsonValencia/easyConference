@@ -2,12 +2,11 @@
     <div>
         <b-tabs :small="true" v-model="tabIndex">
             <b-tab title="👨‍👩‍👧‍👦 Reunión" :title-link-class="getTabClass(0)">
-                <!-- <router-view :meet="meet-activity"></router-view> -->
                 <Meet :user="user"></Meet>
             </b-tab>
             <b-tab title="🎧 Audio! " :title-link-class="getTabClass(1)">
                 <div class="jitsi-meet" id="jitsi-meet" align="center">
-                    <h1>{{$store.state.name}}</h1>
+                    <h1>{{ $store.state.name }}</h1>
                     <div id="meet" style="margin-top: 25px">
                         <vue-jitsi-meet
                             ref="jitsiRef"
@@ -81,7 +80,7 @@ export default {
             return this.tabIndex === idx ? ["bg-blue", "text-white"] : "";
         },
 
-        name(){
+        name() {
             return $store.state.user.name;
         },
 
